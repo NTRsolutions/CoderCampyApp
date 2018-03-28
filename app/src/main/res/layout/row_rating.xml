@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@android:color/transparent"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="6dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/rating_name"
+        android:text="John Franklin"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:layout_marginBottom="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.AppCompatRatingBar
+        android:id="@+id/rating_no"
+        android:backgroundTint="@color/white"
+        android:progressTint="@color/white"
+        android:secondaryProgressTint="@color/white"
+        android:progressBackgroundTint="@color/black"
+        android:numStars="5"
+        android:rating="3"
+        android:stepSize="1"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:isIndicator="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/rating_message"
+        android:text="This course is really awesome."
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:background="#fff"
+        android:layout_marginTop="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+</LinearLayout>

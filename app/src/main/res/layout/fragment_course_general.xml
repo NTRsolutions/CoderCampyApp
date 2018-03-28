@@ -1,0 +1,83 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/course_name"
+            android:textColor="@android:color/white"
+            android:text="Course Name"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/course_category"
+            android:drawableLeft="@drawable/ic_category_support"
+            tools:text="Android Development"
+            android:gravity="center|start"
+            android:drawablePadding="10dp"
+            android:textSize="12sp"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/white_stroke_1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/course_language"
+            android:drawableLeft="@drawable/ic_code_support"
+            tools:text="Android Development"
+            android:gravity="center|start"
+            android:drawablePadding="10dp"
+            android:textSize="12sp"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/white_stroke_1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/course_description"
+            android:drawableLeft="@drawable/ic_description_support"
+            tools:text="sessions with our expert faculty. We will support you constantly by providing relevant tips, tricks or conducting webinars for common problems."
+            android:gravity="center|start"
+            android:drawablePadding="10dp"
+            android:textSize="12sp"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:background="@drawable/white_stroke_1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:background="#fff"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/learnNow"
+            android:backgroundTint="#FF6C2C"
+            app:backgroundTint="#FF6C2C"
+            android:text="Start Learning"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</ScrollView>

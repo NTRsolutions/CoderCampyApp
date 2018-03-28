@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "864507014739",
+    "firebase_url": "https://codercampy-438d0.firebaseio.com",
+    "project_id": "codercampy-438d0",
+    "storage_bucket": "codercampy-438d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864507014739:android:61593ca17a31aafd",
+        "android_client_info": {
+          "package_name": "com.gmonetix.codercampy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864507014739-p3rgigmf49l1d747mtu86h7uc3839pul.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gmonetix.codercampy",
+            "certificate_hash": "56496fdb981c3db509e487c05c652d391c8a86b7"
+          }
+        },
+        {
+          "client_id": "864507014739-jj23lt781ej1ejg2higihlqvdser8l23.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnLUFxk8w0N0X4XUTNepoCPdOEUVUoeuc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864507014739-jj23lt781ej1ejg2higihlqvdser8l23.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

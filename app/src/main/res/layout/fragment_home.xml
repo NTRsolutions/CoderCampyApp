@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.gmonetix.codercampy.ui.fragment.HomeFragment">
+
+    <ss.com.bannerslider.views.BannerSlider
+        android:id="@+id/banner_slider"
+        app:interval="5000"
+        app:loopSlides="true"
+        app:defaultIndicators="round_square"
+        app:defaultBanner="1"
+        app:animateIndicators="true"
+        app:indicatorSize="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        />
+
+</LinearLayout>

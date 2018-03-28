@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:padding="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/close_dialog"
+            android:layout_gravity="end"
+            app:srcCompat="@drawable/ic_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textSize="12sp"
+            android:text="We are social"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="wrap_content" />
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            app:mrl_rippleAlpha="0.1"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/fb_page"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:drawableLeft="@drawable/ic_facebook_support"
+                android:drawablePadding="16dp"
+                android:gravity="center|start"
+                android:text="Like our Facebook page"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            app:mrl_rippleAlpha="0.1"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/youtube_channel"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:drawableLeft="@drawable/ic_youtube_colored_support"
+                android:drawablePadding="16dp"
+                android:gravity="center|start"
+                android:text="Subscribe our Youtube channel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textSize="12sp"
+            android:text="Stay touch with us"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="wrap_content" />
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            app:mrl_rippleAlpha="0.1"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/email_us"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:drawableLeft="@drawable/ic_email_support"
+                android:drawablePadding="16dp"
+                android:gravity="center|start"
+                android:text="contact@codercampy.com"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            app:mrl_rippleAlpha="0.1"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/call_us"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:drawableLeft="@drawable/ic_phone_colored_support"
+                android:drawablePadding="16dp"
+                android:gravity="center|start"
+                android:text="+91 7478870112"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            app:mrl_rippleAlpha="0.1"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/whatsapp_us"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:drawableLeft="@drawable/ic_whatsapp_colored_support"
+                android:drawablePadding="16dp"
+                android:gravity="center|start"
+                android:text="+91 7478870112"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textSize="12sp"
+            android:text="Support us"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="wrap_content" />
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            app:mrl_rippleAlpha="0.1"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/rate_us"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:drawableLeft="@drawable/ic_google_play_support"
+                android:drawablePadding="16dp"
+                android:gravity="center|start"
+                android:text="Rate us on playstore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            app:mrl_rippleAlpha="0.1"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/share_app"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:drawableLeft="@drawable/ic_share_support"
+                android:drawablePadding="16dp"
+                android:gravity="center|start"
+                android:text="Share the app"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            app:mrl_rippleAlpha="0.1"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/donate_us"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:drawableLeft="@drawable/ic_dollar_colored_support"
+                android:drawablePadding="16dp"
+                android:gravity="center|start"
+                android:text="Donate us to keep doing the good work!"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context="com.gmonetix.codercampy.ui.activity.SignUpActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_margin="24dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:adjustViewBounds="true"
+            android:src="@drawable/udacity"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/googleBtn"
+            android:background="@drawable/btn"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="CONTINUE WITH GOOGLE"
+            android:drawableLeft="@drawable/ic_google_support"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/fbBtn"
+            android:background="@drawable/btn"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="CONTINUE WITH FACEBOOK"
+            android:drawableLeft="@drawable/ic_facebook_support"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="OR"
+            android:textSize="14sp"
+            android:textColor="#9e9e9e"
+            android:layout_margin="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/emailBtn"
+            android:background="@drawable/btn"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="CREATE ACCOUNT WITH EMAIL"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/loginBtn"
+            android:textSize="14sp"
+            android:layout_margin="20dp"
+            android:textColor="@color/colorPrimary"
+            android:text="ALREADY A MEMBER? LOG IN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

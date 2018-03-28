@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Coder Campy</string>
+
+    <string name="youtube_api_key">AIzaSyB2EZjsHMLKxDQS3161daOfIK16s82NY4I</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="facebook_app_id">543064656067147</string>
+    <string name="fb_login_protocol_scheme">fb543064656067147</string>
+    <string name="google_web_oauth2">864507014739-kt70g8c0f36bnfuu3tcnl0nv4tt2goqa.apps.googleusercontent.com</string>
+
+    <string name="github_client_id">8bdcc4db872faea62c8b</string>
+    <string name="github_client_secret">3f9348e17b0e582d524ada8935f59d28b62c0f65</string>
+    <string name="github_redirect_url">https://codercampy-438d0.firebaseapp.com/__/auth/handler</string>
+
+    <string name="title_activity_course_details">CourseDetailsActivity</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_home">Home</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+</resources>

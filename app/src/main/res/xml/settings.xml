@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Notification" >
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:title="Push Notification"
+            android:summary="Receive notification from admin" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:title="Course Notification"
+            android:summary="Receive notification for new course uploads" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Other" >
+
+        <Preference
+            android:title="Clear Cache"
+            android:summary="Clear app cache" />
+
+        <Preference
+            android:title="Bug Report"
+            android:summary="Found any bugs? Report us immediately" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="CoderCampy" >
+
+        <Preference
+            android:title="FAQ"
+            android:summary="View Frequently Asked Questions" />
+
+        <Preference
+            android:title="Privacy Policy"
+            android:summary="View Privacy policy" />
+
+        <Preference
+            android:title="Terms and Conditions"
+            android:summary="View Terms and Conditions" />
+
+        <Preference
+            android:title="Version"
+            android:summary="v1.0.0 (Check for updates)" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

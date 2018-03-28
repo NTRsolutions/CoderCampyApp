@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/nav_all_courses"
+            android:icon="@drawable/ic_courses"
+            android:title="All Courses" />
+
+        <item
+            android:id="@+id/nav_my_fav"
+            android:icon="@drawable/ic_favourite"
+            android:title="My Favourites" />
+
+        <item
+            android:id="@+id/nav_blog"
+            android:icon="@drawable/ic_blog"
+            android:title="Blog" />
+
+        <item
+            android:id="@+id/nav_instructors"
+            android:icon="@drawable/ic_instructor"
+            android:title="Instructors" />
+
+    </group>
+
+    <item
+        android:title="">
+        <menu>
+
+            <item
+                android:id="@+id/nav_more"
+                android:icon="@drawable/ic_more"
+                android:title="More" />
+
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="Settings" />
+
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_logout"
+                android:title="Logout" />
+
+        </menu>
+    </item>
+
+</menu>

@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -24,6 +25,12 @@ import com.gmonetix.codercampy.ui.fragment.BlogFragment;
 import com.gmonetix.codercampy.ui.fragment.FavouritesFragment;
 import com.gmonetix.codercampy.ui.fragment.HomeFragment;
 import com.gmonetix.codercampy.ui.fragment.InstructorsFragment;
+import com.gmonetix.codercampy.util.CoderCampy;
+import com.gmonetix.codercampy.util.DesignUtil;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -32,10 +39,12 @@ import retrofit2.Response;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.drawer_layout) DrawerLayout drawer;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
-    MenuItem loginItem, favItem;
+    MenuItem homeItem, myAccountItem, loginItem, favItem;
 
     private APIInterface apiInterface;
     public static User user;
@@ -60,8 +69,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Menu navMenu = navigationView.getMenu();
+        DesignUtil.applyFontToMenu(navMenu, this);
+        DesignUtil.applyFontForToolbarTitle(this);
+        homeItem = navMenu.getItem(0);
         favItem = navMenu.getItem(2);
-        loginItem = navMenu.getItem(5).getSubMenu().getItem(2);
+        myAccountItem = navMenu.getItem(5).getSubMenu().getItem(0);
+        loginItem = navMenu.getItem(5).getSubMenu().getItem(3);
 
         apiInterface = APIClient.getClient().create(APIInterface.class);
 
@@ -69,6 +82,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             loginItem.setIcon(R.drawable.ic_logout);
             loginItem.setTitle("Sign Out");
             favItem.setVisible(true);
+            myAccountItem.setVisible(true);
 
             apiInterface.getUser(App.getAuth().getCurrentUser().getUid()).enqueue(new Callback<User>() {
                 @Override
@@ -87,22 +101,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             loginItem.setIcon(R.drawable.ic_login);
             loginItem.setTitle("Log In");
             favItem.setVisible(false);
+            myAccountItem.setVisible(false);
         }
 
         apiInterface = APIClient.getClient().create(APIInterface.class);
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_container, HomeFragment.newInstance()).commit();
+        this.setTitle("Home");
 
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new HomeFragment()).commit();
+        FirebaseMessaging.getInstance().subscribeToTopic(CoderCampy.TOPIC_COURSE);
+        Log.e("TAG", FirebaseInstanceId.getInstance().getToken());
 
     }
 
@@ -111,7 +119,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (getSupportFragmentManager().findFragmentById(R.id.home_container) instanceof HomeFragment)
+                super.onBackPressed();
+            else {
+                getSupportFragmentManager().beginTransaction().replace(R.id.home_container, HomeFragment.newInstance()).commit();
+                this.setTitle("Home");
+                homeItem.setChecked(true);
+            }
         }
     }
 
@@ -122,7 +136,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         switch (item.getItemId()) {
 
             case R.id.nav_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new HomeFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.home_container, HomeFragment.newInstance()).commit();
                 this.setTitle("Home");
                 break;
 
@@ -137,7 +151,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
 
             case R.id.nav_blog:
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new BlogFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.home_container, new BlogFragment()).commit();
                 this.setTitle("Blog");
                 break;
 
@@ -146,21 +160,31 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 this.setTitle("Instructors");
                 break;
 
+            case R.id.nav_my_account:
+                startActivity(new Intent(this, MyAccountActivity.class));
+                break;
+
             case R.id.nav_more:
                 new MoreDialog(this).show();
                 break;
 
             case R.id.nav_settings:
-                startActivity(new Intent(this,SettingsActivity.class));
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
 
             case R.id.nav_logout:
                 if (App.getAuth().getCurrentUser() != null) {
                     //logout
                     App.getAuth().signOut();
+
+                    Intent intent = new Intent(this, SplashActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    this.finish();
+
                 } else {
                     //login
-                    startActivity(new Intent(this,SignUpActivity.class));
+                    startActivity(new Intent(this, SignUpActivity.class));
                 }
                 break;
 

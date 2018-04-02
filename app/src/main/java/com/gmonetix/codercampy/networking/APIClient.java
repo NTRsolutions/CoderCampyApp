@@ -1,5 +1,9 @@
 package com.gmonetix.codercampy.networking;
 
+import com.gmonetix.codercampy.util.CoderCampy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -17,8 +21,12 @@ public class APIClient {
 
     public static Retrofit getClient() {
 
-        int cacheSize = 100 * 1024 * 1024; // 100 MB
+        int cacheSize = CoderCampy.CACHE_MEMORY * 1024 * 1024; // 100 MB
         Cache cache = new Cache(getCacheDir(), cacheSize);
+
+        /*Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();*/
 
         /*HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -30,12 +38,10 @@ public class APIClient {
 
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.2:3000")
+                .baseUrl(CoderCampy.API)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
-
-
 
         return retrofit;
     }

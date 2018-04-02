@@ -18,6 +18,8 @@ public class User {
 
     public String image;
 
+    public String phone;
+
     public String provider;
 
     public String uid;

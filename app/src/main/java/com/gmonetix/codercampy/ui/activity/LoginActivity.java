@@ -7,12 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -20,8 +24,9 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.gmonetix.codercampy.App;
 import com.gmonetix.codercampy.R;
-import com.gmonetix.codercampy.dialog.MyProgressDialog;
+import com.gmonetix.codercampy.util.DesignUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -73,6 +78,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        DesignUtil.applyFontForToolbarTitle(this);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +114,44 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         };
 
+        frgotPswd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialDialog.Builder(LoginActivity.this)
+                        .title("Reset password")
+                        .typeface(DesignUtil.getTypeFace(LoginActivity.this),DesignUtil.getTypeFace(LoginActivity.this))
+                        .content("Link will be sent to your registered email")
+                        .autoDismiss(false)
+                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+                        .input("registered email",null, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(final MaterialDialog dialog, CharSequence input) {
+                                String e = input.toString();
+                                if (!e.isEmpty() || Patterns.EMAIL_ADDRESS.matcher(e).matches()) {
+
+                                    App.getAuth().sendPasswordResetEmail(e)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+
+                                                        Toast.makeText(LoginActivity.this, "Reset link sent to your email", Toast.LENGTH_SHORT).show();
+                                                        dialog.dismiss();
+
+                                                    } else {
+                                                        Toast.makeText(LoginActivity.this, "Error - " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+
+                                } else {
+
+                                }
+                            }
+                        }).show();
+            }
+        });
+
     }
 
     private void google() {
@@ -132,9 +176,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onSuccess(final LoginResult loginResult) {
 
-                final MyProgressDialog progressDialog = new MyProgressDialog(LoginActivity.this,"Authenticating...");
-                progressDialog.show();
-
                 AccessToken token = loginResult.getAccessToken();
                 final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
 
@@ -142,8 +183,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                progressDialog.dismiss();
 
                                 if (task.isSuccessful()) {
 
@@ -184,10 +223,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (!validate()) {
             return;
         }
-
-        final MyProgressDialog progressDialog = new MyProgressDialog(this,"Authenticating...");
-        progressDialog.show();
-
         String email = emailText.getEditText().getText().toString();
         String password = passwordText.getEditText().getText().toString();
 
@@ -196,7 +231,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        progressDialog.dismiss();
                         if (task.isSuccessful()) {
 
                             updateUI(mAuth.getCurrentUser());
@@ -277,16 +311,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        final MyProgressDialog progressDialog = new MyProgressDialog(LoginActivity.this,"Authenticating...");
-        progressDialog.show();
 
         final AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        progressDialog.dismiss();
 
                         if (task.isSuccessful()) {
 

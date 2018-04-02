@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.gmonetix.codercampy.R;
 import com.gmonetix.codercampy.ui.fragment.SettingsFragment;
+import com.gmonetix.codercampy.util.DesignUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        DesignUtil.applyFontForToolbarTitle(this);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

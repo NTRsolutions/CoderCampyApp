@@ -25,6 +25,12 @@ public class Instructor  implements Serializable{
     @SerializedName("phone")
     public String phone;
 
+    public String linkedin;
+
+    public String facebook;
+
+    public String whatsapp;
+
     @SerializedName("bio")
     public String bio;
 

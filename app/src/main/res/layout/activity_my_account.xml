@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gmonetix.codercampy.ui.activity.MyAccountActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_back_colored"
+            app:title="My Account"
+            android:background="@color/white"
+            app:titleTextColor="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.CardView
+        app:cardElevation="5dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:cardBackgroundColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="5dp">
+
+        <LinearLayout
+            android:padding="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/auth_provider"
+                android:text="Facebook"
+                android:fontFamily="@font/main_font"
+                android:drawableLeft="@drawable/ic_verified_support"
+                android:drawablePadding="4dp"
+                android:layout_margin="8dp"
+                android:layout_gravity="end"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                tools:src="@drawable/bg"
+                android:id="@+id/image"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+
+            <TextView
+                android:id="@+id/name"
+                android:text="Gaurav Bordoloi"
+                android:textSize="16sp"
+                android:drawableLeft="@drawable/ic_user_outline"
+                android:drawablePadding="12dp"
+                android:fontFamily="@font/main_font"
+                android:layout_gravity="center"
+                android:gravity="center|start"
+                android:textColor="@android:color/black"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/email"
+                android:text="gmonetix@gmail.com"
+                android:textSize="16sp"
+                android:drawableLeft="@drawable/ic_email_outline"
+                android:drawablePadding="12dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/main_font"
+                android:gravity="center|start"
+                android:textColor="@android:color/black"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/phone"
+                android:text="+91 7478870112"
+                android:textSize="16sp"
+                android:drawableLeft="@drawable/ic_phone_colored_support"
+                android:drawablePadding="12dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/main_font"
+                android:gravity="center|start"
+                android:textColor="@android:color/black"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/changePass"
+                android:text="Change Password"
+                android:textAllCaps="false"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorPrimary"
+                app:backgroundTint="@color/colorPrimary"
+                android:fontFamily="@font/main_font"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</android.support.design.widget.CoordinatorLayout>

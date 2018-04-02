@@ -25,6 +25,7 @@
             android:textSize="12sp"
             android:layout_margin="20dp"
             android:textColor="@color/black"
+            android:fontFamily="@font/main_font"
             android:text="Login to your CoderCampy Account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -33,12 +34,14 @@
             android:id="@+id/input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/main_font"
             android:theme="@style/TextLabel"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp">
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:textColor="@color/black"
+                android:fontFamily="@font/main_font"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:hint="Email" />
@@ -48,6 +51,7 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_password"
             android:theme="@style/TextLabel"
+            android:fontFamily="@font/main_font"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -55,6 +59,7 @@
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:textColor="@color/black"
+                android:fontFamily="@font/main_font"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="Password"/>
@@ -65,6 +70,7 @@
             android:layout_gravity="end"
             android:textSize="12sp"
             android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/main_font"
             android:text="Forgot password?"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -75,6 +81,7 @@
             app:backgroundTint="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/main_font"
             android:layout_marginTop="24dp"
             android:textColor="@color/white"
             android:layout_marginBottom="24dp"
@@ -93,6 +100,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="GOOGLE"
+                android:fontFamily="@font/main_font"
                 android:drawableLeft="@drawable/ic_google_support"
                 android:textColor="@color/black"
                 android:layout_width="0dp"
@@ -110,6 +118,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="FACBOOK"
+                android:fontFamily="@font/main_font"
                 android:drawableLeft="@drawable/ic_facebook_support"
                 android:padding="10dp"
                 android:textColor="@color/black"
@@ -121,10 +130,11 @@
 
         <TextView
             android:id="@+id/signUp"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:layout_margin="20dp"
             android:textColor="@color/colorPrimary"
             android:text="OR SIGN UP NOW"
+            android:fontFamily="@font/main_font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

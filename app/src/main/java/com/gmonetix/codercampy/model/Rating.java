@@ -10,18 +10,15 @@ import java.io.Serializable;
 
 public class Rating implements Serializable{
 
-    @SerializedName("_id")
-    public String id;
+    public String uid;
 
-    @SerializedName("message")
-    public String message;
-
-    @SerializedName("rating")
     public int rating;
 
-    public Rating(String id, String message, int rating) {
-        this.id = id;
-        this.message = message;
+    public String message;
+
+    public Rating(String uid, int rating, String message) {
+        this.uid = uid;
         this.rating = rating;
+        this.message = message;
     }
 }

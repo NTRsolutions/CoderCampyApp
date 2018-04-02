@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/discussions_recyclerView"
+        android:layout_above="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/discussion_et"
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:hint="Ask/Answer here"
+            android:fontFamily="@font/main_font"
+            android:padding="8dp"
+            android:textSize="14sp"
+            android:layout_margin="6dp"
+            android:textColor="@color/black"
+            android:textColorLink="@color/black"
+            android:maxLines="4"
+            android:minLines="2"
+            android:inputType="textMultiLine"
+            android:textColorHighlight="@color/colorPrimary"
+            android:background="@color/white"
+            android:layout_height="wrap_content" />
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:id="@+id/send"
+            app:mrl_rippleAlpha="0.1"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_margin="6dp"
+                app:srcCompat="@drawable/ic_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

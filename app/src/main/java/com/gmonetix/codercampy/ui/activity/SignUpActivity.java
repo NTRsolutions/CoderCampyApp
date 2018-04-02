@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -19,12 +18,12 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.gmonetix.codercampy.App;
 import com.gmonetix.codercampy.R;
-import com.gmonetix.codercampy.dialog.MyProgressDialog;
 import com.gmonetix.codercampy.model.Response;
 import com.gmonetix.codercampy.model.User;
 import com.gmonetix.codercampy.networking.APIClient;
 import com.gmonetix.codercampy.networking.APIInterface;
 import com.gmonetix.codercampy.util.CoderCampy;
+import com.gmonetix.codercampy.util.DesignUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -70,6 +69,7 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        DesignUtil.applyFontForToolbarTitle(this);
         /*toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,9 +114,6 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onSuccess(final LoginResult loginResult) {
 
-                final MyProgressDialog progressDialog = new MyProgressDialog(SignUpActivity.this,"Authenticating...");
-                progressDialog.show();
-
                 AccessToken token = loginResult.getAccessToken();
                 final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
 
@@ -133,7 +130,6 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
                                     apiInterface.createUser(user).enqueue(new Callback<Response>() {
                                         @Override
                                         public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                                            progressDialog.dismiss();
                                             updateUI(App.getAuth().getCurrentUser());
                                             if (response.body().code.equals("success")) {
                                                 Toast.makeText(SignUpActivity.this, "success", Toast.LENGTH_SHORT).show();
@@ -144,7 +140,6 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
 
                                         @Override
                                         public void onFailure(Call<Response> call, Throwable t) {
-                                            progressDialog.dismiss();
                                             updateUI(App.getAuth().getCurrentUser());
                                             Toast.makeText(SignUpActivity.this, "failed - " + t.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
@@ -194,8 +189,6 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        final MyProgressDialog progressDialog = new MyProgressDialog(SignUpActivity.this,"Authenticating...");
-        progressDialog.show();
 
         final AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         App.getAuth().signInWithCredential(credential)
@@ -211,7 +204,6 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
                             apiInterface.createUser(user).enqueue(new Callback<Response>() {
                                 @Override
                                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                                    progressDialog.dismiss();
                                     updateUI(App.getAuth().getCurrentUser());
                                     if (response.body().code.equals("success")) {
                                         Toast.makeText(SignUpActivity.this, "success", Toast.LENGTH_SHORT).show();
@@ -222,7 +214,6 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
 
                                 @Override
                                 public void onFailure(Call<Response> call, Throwable t) {
-                                    progressDialog.dismiss();
                                     updateUI(App.getAuth().getCurrentUser());
                                     Toast.makeText(SignUpActivity.this, "failed - " + t.getMessage(), Toast.LENGTH_SHORT).show();
                                 }

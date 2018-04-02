@@ -14,6 +14,6 @@ public class CourseDiscussion implements Serializable{
     public String id;
 
     @SerializedName("discussions")
-    List<Discussion> discussions;
+    public List<Discussion> discussions;
 
 }

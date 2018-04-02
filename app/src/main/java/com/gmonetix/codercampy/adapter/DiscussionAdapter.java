@@ -2,18 +2,23 @@ package com.gmonetix.codercampy.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.gmonetix.codercampy.R;
 import com.gmonetix.codercampy.model.Discussion;
-import com.gmonetix.codercampy.util.CustomLinearLayoutManager;
+import com.gmonetix.codercampy.model.Name;
+import com.gmonetix.codercampy.networking.APIInterface;
 import com.gmonetix.codercampy.util.GetTimeAgo;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Gaurav Bordoloi on 2/15/2018.
@@ -24,8 +29,11 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Di
     private Context context;
     private List<Discussion> discussionList = new ArrayList<>();
 
-    public DiscussionAdapter(Context context) {
+    private APIInterface apiInterface;
+
+    public DiscussionAdapter(Context context, APIInterface apiInterface) {
         this.context = context;
+        this.apiInterface = apiInterface;
     }
 
     public void setList(List<Discussion> discussionList) {
@@ -40,19 +48,24 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Di
     }
 
     @Override
-    public void onBindViewHolder(DiscussionViewHolder holder, int position) {
+    public void onBindViewHolder(final DiscussionViewHolder holder, int position) {
         Discussion discussion = discussionList.get(position);
 
         holder.discussionName.setText(discussion.uid);
         holder.discussionTime.setText(GetTimeAgo.getTimeAgo(Long.parseLong(discussion.timestamp),context));
         holder.discussionMessage.setText(discussion.message);
 
-        if (discussion.replies != null && discussion.replies.size() > 0) {
-            DiscussionAdapter adapter = new DiscussionAdapter(context);
-            holder.recyclerViewReplies.setLayoutManager(new CustomLinearLayoutManager(context));
-            holder.recyclerViewReplies.setAdapter(adapter);
-            adapter.setList(discussion.replies);
-        }
+        apiInterface.getUserNameByUid(discussion.uid).enqueue(new Callback<Name>() {
+            @Override
+            public void onResponse(Call<Name> call, Response<Name> response) {
+                holder.discussionName.setText(response.body().name);
+            }
+
+            @Override
+            public void onFailure(Call<Name> call, Throwable t) {
+                Log.e("TAG","error - " + t.getMessage());
+            }
+        });
 
     }
 
@@ -66,7 +79,6 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Di
         @BindView(R.id.discussion_name) TextView discussionName;
         @BindView(R.id.discussion_time) TextView discussionTime;
         @BindView(R.id.discussion_message) TextView discussionMessage;
-        @BindView(R.id.recycler_view_replies) RecyclerView recyclerViewReplies;
 
         public DiscussionViewHolder(View itemView) {
             super(itemView);

@@ -20,8 +20,11 @@ import butterknife.OnClick;
 
 public class MoreDialog extends AppCompatDialog {
 
+    private Context context;
+
     public MoreDialog(Context context) {
         super(context,R.style.Theme_AppCompat_Dialog);
+        this.context = context;
     }
 
     @Override
@@ -36,6 +39,11 @@ public class MoreDialog extends AppCompatDialog {
     @OnClick(R.id.close_dialog)
     void closeDialog() {
         dismiss();
+    }
+
+    @OnClick(R.id.github)
+    void openGithub() {
+        IntentUtil.openCustomChromeTab(context,Uri.parse(CoderCampy.GITHUB));
     }
 
     @OnClick(R.id.fb_page)

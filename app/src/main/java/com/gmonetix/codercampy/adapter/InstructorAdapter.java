@@ -14,6 +14,7 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.gmonetix.codercampy.R;
 import com.gmonetix.codercampy.model.Instructor;
 import com.gmonetix.codercampy.ui.activity.InstructorDetailsActivity;
@@ -34,9 +35,11 @@ public class InstructorAdapter extends RecyclerView.Adapter<InstructorAdapter.In
     private Context context;
     private List<Instructor> searchList;
 
+    private RequestManager glide;
 
     public InstructorAdapter(Context context) {
         this.context = context;
+        glide = Glide.with(context);
     }
 
     public void setList(List<Instructor> instructorList) {
@@ -56,7 +59,7 @@ public class InstructorAdapter extends RecyclerView.Adapter<InstructorAdapter.In
 
         holder.name.setText(instructor.name);
 
-        Glide.with(context).load(instructor.image).into(holder.image);
+        glide.load(instructor.image).into(holder.image);
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

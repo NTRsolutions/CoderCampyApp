@@ -37,6 +37,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="CONTINUE WITH GOOGLE"
+            android:fontFamily="@font/main_font"
             android:drawableLeft="@drawable/ic_google_support"
             android:textColor="@color/black"
             android:layout_width="match_parent"
@@ -52,6 +53,7 @@
             android:text="CONTINUE WITH FACEBOOK"
             android:drawableLeft="@drawable/ic_facebook_support"
             android:padding="10dp"
+            android:fontFamily="@font/main_font"
             android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -71,6 +73,7 @@
             android:gravity="center"
             android:text="CREATE ACCOUNT WITH EMAIL"
             android:padding="10dp"
+            android:fontFamily="@font/main_font"
             android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -79,6 +82,7 @@
             android:id="@+id/loginBtn"
             android:textSize="14sp"
             android:layout_margin="20dp"
+            android:fontFamily="@font/main_font"
             android:textColor="@color/colorPrimary"
             android:text="ALREADY A MEMBER? LOG IN"
             android:layout_width="wrap_content"

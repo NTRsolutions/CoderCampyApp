@@ -41,9 +41,6 @@ public class Course implements Serializable{
     @SerializedName("lecture")
     public List<Lecture> lectures;
 
-    @SerializedName("rating")
-    public List<Rating> ratings;
-
     @Override
     public String toString() {
         return "Course{" +
@@ -57,7 +54,6 @@ public class Course implements Serializable{
                 ", is_active=" + is_active +
                 ", languages=" + languages +
                 ", lectures=" + lectures +
-                ", ratings=" + ratings +
                 '}';
     }
 }

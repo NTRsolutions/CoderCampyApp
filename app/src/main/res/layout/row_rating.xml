@@ -4,24 +4,25 @@
     android:orientation="vertical"
     android:background="@android:color/transparent"
     android:layout_width="match_parent"
-    android:layout_marginBottom="6dp"
+    android:layout_margin="4dp"
     android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/rating_name"
         android:text="John Franklin"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:layout_marginBottom="2dp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:fontFamily="@font/main_font"
+        android:maxLines="1"
+        android:background="@drawable/color_primary_rounded_corner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <android.support.v7.widget.AppCompatRatingBar
         android:id="@+id/rating_no"
-        android:backgroundTint="@color/white"
-        android:progressTint="@color/white"
-        android:secondaryProgressTint="@color/white"
+        android:backgroundTint="@color/black"
+        android:progressTint="@color/black"
+        android:secondaryProgressTint="@color/black"
         android:progressBackgroundTint="@color/black"
         android:numStars="5"
         android:rating="3"
@@ -36,8 +37,9 @@
     <TextView
         android:id="@+id/rating_message"
         android:text="This course is really awesome."
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
+        android:fontFamily="@font/main_font"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

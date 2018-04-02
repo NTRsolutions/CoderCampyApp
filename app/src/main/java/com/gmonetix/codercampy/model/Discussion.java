@@ -11,16 +11,16 @@ import java.util.List;
 
 public class Discussion implements Serializable {
 
-    @SerializedName("uid")
     public String uid;
 
-    @SerializedName("timestamp")
     public String timestamp;
 
-    @SerializedName("message")
     public String message;
 
-    @SerializedName("reply")
-    public List<Discussion> replies;
+    public Discussion(String uid, String timestamp, String message) {
+        this.uid = uid;
+        this.timestamp = timestamp;
+        this.message = message;
+    }
 
 }

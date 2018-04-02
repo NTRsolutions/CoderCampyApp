@@ -6,6 +6,6 @@ package com.gmonetix.codercampy.listener;
 
 public interface OnLectureClickListener {
 
-    void onLectureClick(String lectureId, String videoId);
+    void onLectureClick(int pos, String htmlData, String videoId);
 
 }

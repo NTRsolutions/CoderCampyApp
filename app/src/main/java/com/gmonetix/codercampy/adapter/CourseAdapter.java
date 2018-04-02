@@ -13,15 +13,25 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.gmonetix.codercampy.App;
 import com.gmonetix.codercampy.R;
 import com.gmonetix.codercampy.model.Course;
-import com.gmonetix.codercampy.ui.activity.CourseDetailsActivity;
+import com.gmonetix.codercampy.model.Response;
+import com.gmonetix.codercampy.networking.APIInterface;
+import com.gmonetix.codercampy.ui.activity.ClassRoomActivity;
+import com.gmonetix.codercampy.ui.activity.Home;
+import com.sackcentury.shinebuttonlib.ShineButton;
 import android.widget.Filter;
+import android.widget.Toast;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * Created by Gaurav Bordoloi on 2/14/2018.
@@ -37,10 +47,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     private List<Course> searchList;
 
     private RequestManager glide;
+    private APIInterface apiInterface;
 
-    public CourseAdapter(Context context) {
+    public CourseAdapter(Context context, APIInterface apiInterface) {
         this.context = context;
         glide = Glide.with(context);
+        this.apiInterface = apiInterface;
     }
 
     public void setList(List<Course> courseList) {
@@ -55,11 +67,21 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     }
 
     @Override
-    public void onBindViewHolder(CourseViewHolder holder, final int position) {
+    public void onBindViewHolder(final CourseViewHolder holder, final int position) {
         final Course course = courseList.get(position);
 
-        Log.e("TAG",courseList.toString());
-
+        if (App.getAuth().getCurrentUser() == null) {
+            holder.favBtn.setVisibility(View.GONE);
+        } else {
+            holder.favBtn.setVisibility(View.VISIBLE);
+            if (Home.user.favourites != null) {
+                if (Home.user.favourites.contains(course.id)) {
+                    holder.favBtn.setChecked(true);
+                } else {
+                    holder.favBtn.setChecked(false);
+                }
+            }
+        }
 
         glide.load(course.image).into(holder.courseImage);
         holder.courseName.setText(course.name);
@@ -77,10 +99,55 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, CourseDetailsActivity.class);
+                Intent intent = new Intent(context, ClassRoomActivity.class);
                 intent.putExtra(COURSE,(Serializable) course);
                 context.startActivity(intent);
 
+            }
+        });
+
+        holder.favBtn.setOnCheckStateChangeListener(new ShineButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(View view, boolean checked) {
+                if (checked) {
+                    apiInterface.addFav(course.id, App.getAuth().getCurrentUser().getUid()).enqueue(new Callback<Response>() {
+                        @Override
+                        public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                            if (response.body().code.equals("success")) {
+                                Home.user.favourites.add(course.id);
+                                Toasty.success(context,"Added to favourites", Toast.LENGTH_SHORT,true).show();
+                            } else {
+                                holder.favBtn.setChecked(false);
+                                Toasty.error(context,"Error adding to favourite", Toast.LENGTH_SHORT,true).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Response> call, Throwable t) {
+                            holder.favBtn.setChecked(false);
+                            Toasty.error(context,"Error adding to favourite", Toast.LENGTH_SHORT,true).show();
+                        }
+                    });
+                } else {
+                    apiInterface.removeFav(course.id, App.getAuth().getCurrentUser().getUid()).enqueue(new Callback<Response>() {
+                        @Override
+                        public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                            if (response.body().code.equals("success")) {
+                                Home.user.favourites.remove(course.id);
+                                Toasty.success(context,"Removed from favourites", Toast.LENGTH_SHORT,true).show();
+                            } else {
+                                holder.favBtn.setChecked(true);
+                                Toasty.error(context,"Error removing from favourite", Toast.LENGTH_SHORT,true).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Response> call, Throwable t) {
+                            holder.favBtn.setChecked(true);
+                            Toasty.error(context,"Error removing from favourite", Toast.LENGTH_SHORT,true).show();
+                        }
+                    });
+                }
             }
         });
 
@@ -128,6 +195,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         @BindView(R.id.course_image) ImageView courseImage;
         @BindView(R.id.course_name) TextView courseName;
         @BindView(R.id.course_rating) RatingBar ratingBar;
+        @BindView(R.id.favbtn) ShineButton favBtn;
 
         public CourseViewHolder(View itemView) {
             super(itemView);

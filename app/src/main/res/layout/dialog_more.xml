@@ -22,9 +22,29 @@
         <TextView
             android:layout_width="match_parent"
             android:textSize="12sp"
-            android:text="We are social"
+            android:fontFamily="@font/main_font"
+            android:text="Links"
             android:textColor="@color/colorPrimary"
             android:layout_height="wrap_content" />
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            app:mrl_rippleAlpha="0.1"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/github"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/main_font"
+                android:drawableLeft="@drawable/ic_github"
+                android:drawablePadding="16dp"
+                android:gravity="center|start"
+                android:text="Github"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.balysv.materialripple.MaterialRippleLayout>
 
         <com.balysv.materialripple.MaterialRippleLayout
             app:mrl_rippleAlpha="0.1"
@@ -36,10 +56,11 @@
                 android:id="@+id/fb_page"
                 android:padding="12dp"
                 android:textColor="@color/black"
+                android:fontFamily="@font/main_font"
                 android:drawableLeft="@drawable/ic_facebook_support"
                 android:drawablePadding="16dp"
                 android:gravity="center|start"
-                android:text="Like our Facebook page"
+                android:text="Facebook page"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.balysv.materialripple.MaterialRippleLayout>
@@ -53,11 +74,12 @@
             <TextView
                 android:id="@+id/youtube_channel"
                 android:padding="12dp"
+                android:fontFamily="@font/main_font"
                 android:textColor="@color/black"
                 android:drawableLeft="@drawable/ic_youtube_colored_support"
                 android:drawablePadding="16dp"
                 android:gravity="center|start"
-                android:text="Subscribe our Youtube channel"
+                android:text="Youtube Channel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.balysv.materialripple.MaterialRippleLayout>
@@ -65,6 +87,7 @@
         <TextView
             android:layout_width="match_parent"
             android:textSize="12sp"
+            android:fontFamily="@font/main_font"
             android:text="Stay touch with us"
             android:textColor="@color/colorPrimary"
             android:layout_height="wrap_content" />
@@ -78,6 +101,7 @@
             <TextView
                 android:id="@+id/email_us"
                 android:padding="12dp"
+                android:fontFamily="@font/main_font"
                 android:textColor="@color/black"
                 android:drawableLeft="@drawable/ic_email_support"
                 android:drawablePadding="16dp"
@@ -97,6 +121,7 @@
                 android:id="@+id/call_us"
                 android:padding="12dp"
                 android:textColor="@color/black"
+                android:fontFamily="@font/main_font"
                 android:drawableLeft="@drawable/ic_phone_colored_support"
                 android:drawablePadding="16dp"
                 android:gravity="center|start"
@@ -115,6 +140,7 @@
                 android:id="@+id/whatsapp_us"
                 android:padding="12dp"
                 android:textColor="@color/black"
+                android:fontFamily="@font/main_font"
                 android:drawableLeft="@drawable/ic_whatsapp_colored_support"
                 android:drawablePadding="16dp"
                 android:gravity="center|start"
@@ -126,6 +152,7 @@
         <TextView
             android:layout_width="match_parent"
             android:textSize="12sp"
+            android:fontFamily="@font/main_font"
             android:text="Support us"
             android:textColor="@color/colorPrimary"
             android:layout_height="wrap_content" />
@@ -139,6 +166,7 @@
             <TextView
                 android:id="@+id/rate_us"
                 android:padding="12dp"
+                android:fontFamily="@font/main_font"
                 android:textColor="@color/black"
                 android:drawableLeft="@drawable/ic_google_play_support"
                 android:drawablePadding="16dp"
@@ -158,6 +186,7 @@
                 android:id="@+id/share_app"
                 android:padding="12dp"
                 android:textColor="@color/black"
+                android:fontFamily="@font/main_font"
                 android:drawableLeft="@drawable/ic_share_support"
                 android:drawablePadding="16dp"
                 android:gravity="center|start"
@@ -178,6 +207,7 @@
                 android:textColor="@color/black"
                 android:drawableLeft="@drawable/ic_dollar_colored_support"
                 android:drawablePadding="16dp"
+                android:fontFamily="@font/main_font"
                 android:gravity="center|start"
                 android:text="Donate us to keep doing the good work!"
                 android:layout_width="match_parent"

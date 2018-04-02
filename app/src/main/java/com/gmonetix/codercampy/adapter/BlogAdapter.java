@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.gmonetix.codercampy.R;
 import com.gmonetix.codercampy.model.Blog;
 import com.gmonetix.codercampy.ui.activity.BlogDetailsActivity;
@@ -32,9 +34,13 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.MyViewHolder> 
 
     private Context context;
     private List<Blog> blogs = new ArrayList<>();
+    private List<Blog> searchList;
+
+    private RequestManager glide;
 
     public BlogAdapter(Context context) {
         this.context = context;
+        glide = Glide.with(context);
     }
 
     public void setList(List<Blog> blogs) {
@@ -54,7 +60,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.MyViewHolder> 
 
         holder.blogName.setText(blog.name);
         holder.blogTime.setText(GetTimeAgo.getTimeAgo(Long.parseLong(blog.time),context));
-        Glide.with(context).load(blog.image).apply(GlideOptions.getRequestOptions(R.drawable.course_default,R.drawable.course_default)).into(holder.imageView);
+        glide.load(blog.image).apply(GlideOptions.getRequestOptions(R.drawable.course_default,R.drawable.course_default)).into(holder.imageView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +71,37 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.MyViewHolder> 
             }
         });
 
+    }
+
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                final FilterResults oReturn = new FilterResults();
+                final List<Blog> results = new ArrayList<>();
+                if (searchList == null) {
+                    searchList = blogs;
+                }
+                if (charSequence != null) {
+                    if (searchList != null && searchList.size() > 0) {
+                        for (Blog blog : searchList) {
+                            if (blog.name.toLowerCase().contains(charSequence.toString())) {
+                                results.add(blog);
+                            }
+                        }
+                    }
+                    oReturn.values = results;
+                    oReturn.count = results.size();
+                }
+                return oReturn;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                blogs = (ArrayList<Blog>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     @Override

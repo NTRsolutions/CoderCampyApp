@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.gmonetix.codercampy.R;
 import com.gmonetix.codercampy.util.GlideOptions;
-
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -24,8 +24,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
     private List<String> list = new ArrayList<>();
     private Context context;
 
-    public ImageAdapter(Context context) {
+    private OnClickListener onClickListener;
+
+    private RequestManager glide;
+
+    public ImageAdapter(Context context, OnClickListener onClickListener) {
         this.context = context;
+        this.onClickListener = onClickListener;
+        glide = Glide.with(context);
     }
 
     public void setList(List<String> list) {
@@ -42,7 +48,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        Glide.with(context).load(list.get(position)).apply(GlideOptions.getRequestOptions(R.drawable.course_default,R.drawable.course_default)).into(holder.imageView);
+        glide.load(list.get(position)).apply(GlideOptions.getRequestOptions(R.drawable.course_default,R.drawable.course_default)).into(holder.imageView);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickListener.onClick(v);
+            }
+        });
 
     }
 
@@ -60,6 +73,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public interface OnClickListener {
+        void onClick(View v);
     }
 
 }

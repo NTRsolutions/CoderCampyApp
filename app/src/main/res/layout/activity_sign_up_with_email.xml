@@ -24,6 +24,7 @@
         <TextView
             android:textSize="12sp"
             android:layout_margin="20dp"
+            android:fontFamily="@font/main_font"
             android:textColor="@color/black"
             android:text="Create your CoderCampy Account"
             android:layout_width="wrap_content"
@@ -33,12 +34,14 @@
             android:id="@+id/input_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/main_font"
             android:theme="@style/TextLabel"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp">
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:textColor="@color/black"
+                android:fontFamily="@font/main_font"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:hint="Name" />
@@ -49,11 +52,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/TextLabel"
+            android:fontFamily="@font/main_font"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp">
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:textColor="@color/black"
+                android:fontFamily="@font/main_font"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:hint="Email" />
@@ -64,12 +69,14 @@
             android:id="@+id/input_password"
             android:theme="@style/TextLabel"
             android:layout_width="match_parent"
+            android:fontFamily="@font/main_font"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp">
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:textColor="@color/black"
+                android:fontFamily="@font/main_font"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="Password"/>
@@ -81,6 +88,7 @@
             app:backgroundTint="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/main_font"
             android:layout_marginTop="24dp"
             android:textColor="@color/white"
             android:layout_marginBottom="12dp"

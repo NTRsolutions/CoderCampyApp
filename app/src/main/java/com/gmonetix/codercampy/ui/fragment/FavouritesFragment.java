@@ -1,6 +1,5 @@
 package com.gmonetix.codercampy.ui.fragment;
 
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-
+import android.widget.LinearLayout;
 import com.gmonetix.codercampy.R;
 import com.gmonetix.codercampy.adapter.CourseAdapter;
 import com.gmonetix.codercampy.model.Course;
@@ -25,10 +24,8 @@ import com.gmonetix.codercampy.networking.APIInterface;
 import com.gmonetix.codercampy.ui.activity.Home;
 import com.gmonetix.codercampy.util.CourseItemAnimator;
 import com.gmonetix.codercampy.util.CourseItemDecoration;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -42,6 +39,7 @@ public class FavouritesFragment extends Fragment implements SearchView.OnQueryTe
 
     private View rootView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.empty_layout) LinearLayout emptyLayout;
 
     private List<Course> courseList;
     private CourseAdapter adapter;
@@ -65,39 +63,47 @@ public class FavouritesFragment extends Fragment implements SearchView.OnQueryTe
             ButterKnife.bind(this,rootView);
             setHasOptionsMenu(true);
 
+            apiInterface = APIClient.getClient().create(APIInterface.class);
+
             courseList = new ArrayList<>();
-            adapter = new CourseAdapter(getActivity());
+            adapter = new CourseAdapter(getActivity(),apiInterface);
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
             recyclerView.setItemAnimator(new CourseItemAnimator());
             recyclerView.addItemDecoration(new CourseItemDecoration(50));
             recyclerView.setHasFixedSize(true);
             recyclerView.setAdapter(adapter);
 
-            apiInterface = APIClient.getClient().create(APIInterface.class);
-
             StringBuilder a = new StringBuilder();
-            for (String s : Home.user.favourites) {
-                if (!a.toString().isEmpty())
-                    a.append(",");
-                a.append(s);
+            if (Home.user.favourites != null) {
+                for (String s : Home.user.favourites) {
+                    if (!a.toString().isEmpty())
+                        a.append(",");
+                    a.append(s);
+                }
             }
 
-            apiInterface.getCourses(a.toString()).enqueue(new Callback<List<Course>>() {
-                @Override
-                public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
-                    if (response.body() != null) {
-                        courseList.addAll(response.body());
-                        adapter.setList(courseList);
-                    } else {
-                        //TODO
+            if (a.toString().trim().isEmpty()) {
+                emptyLayout.setVisibility(View.VISIBLE);
+            } else {
+                apiInterface.getCourses(a.toString()).enqueue(new Callback<List<Course>>() {
+                    @Override
+                    public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
+                        if (response.body() != null) {
+                            courseList.addAll(response.body());
+                            adapter.setList(courseList);
+                            emptyLayout.setVisibility(View.GONE);
+                        } else {
+                            emptyLayout.setVisibility(View.VISIBLE);
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<List<Course>> call, Throwable t) {
-                    Log.e("Error",t.getMessage());
-                }
-            });
+                    @Override
+                    public void onFailure(Call<List<Course>> call, Throwable t) {
+                        Log.e("Error",t.getMessage());
+                        emptyLayout.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
 
         }
         return rootView;

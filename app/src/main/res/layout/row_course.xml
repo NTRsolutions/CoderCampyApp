@@ -9,6 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:focusable="true"
     app:cardCornerRadius="5dp">
 
@@ -19,30 +20,29 @@
 
         <ImageView
             android:id="@+id/course_image"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="10dp"
             android:src="@drawable/course_default"
             android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:weightSum="3"
-            android:orientation="horizontal"
+        <FrameLayout
+            android:layout_margin="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_weight="2"
-                android:layout_width="0dp"
                 android:orientation="vertical"
+                android:layout_marginRight="28dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/course_name"
-                    android:layout_margin="8dp"
                     android:textColor="@color/black"
                     android:text="Course Name"
+                    android:maxLines="2"
+                    android:fontFamily="@font/main_font"
+                    android:layout_marginBottom="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -55,15 +55,23 @@
                     android:rating="3"
                     android:stepSize="1"
                     style="?android:attr/ratingBarStyleSmall"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
                     android:isIndicator="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
 
-        </LinearLayout>
+            <com.sackcentury.shinebuttonlib.ShineButton
+                android:id="@+id/favbtn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end|center"
+                app:btn_color="@android:color/darker_gray"
+                app:btn_fill_color="@color/colorPrimary"
+                app:allow_random_color="false"
+                app:siShape="@raw/heart"/>
+
+        </FrameLayout>
 
     </LinearLayout>
 

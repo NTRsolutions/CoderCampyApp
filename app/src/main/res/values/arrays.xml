@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="libraries_name">
+        <item>Youtube Player</item>
+        <item>Facebook Auth</item>
+        <item>Facebook Shimmer</item>
+        <item>FireBase</item>
+        <item>Glide</item>
+        <item>Retrofit</item>
+        <item>Butter Knife</item>
+        <item>Gson</item>
+        <item>Event Bus</item>
+        <item>Material Ripple</item>
+        <item>Circle ImageView</item>
+        <item>Material Dialogs</item>
+        <item>Banner Slider</item>
+        <item>Circle Indicator</item>
+        <item>Android Simple Tooltip</item>
+        <item>Shine Button</item>
+        <item>Toasty</item>
+    </string-array>
+
+    <string-array name="libraries_link">
+        <item>https://developers.google.com/youtube/android/player/</item>
+        <item>https://developers.facebook.com/docs/facebook-login</item>
+        <item>http://facebook.github.io/shimmer-android/</item>
+        <item>https://firebase.google.com/docs/android/setup</item>
+        <item>https://github.com/bumptech/glide</item>
+        <item>http://square.github.io/retrofit/</item>
+        <item>http://jakewharton.github.io/butterknife/</item>
+        <item>https://github.com/google/gson</item>
+        <item>https://github.com/greenrobot/EventBus</item>
+        <item>https://github.com/balysv/material-ripple</item>
+        <item>https://github.com/hdodenhof/CircleImageView</item>
+        <item>https://github.com/afollestad/material-dialogs</item>
+        <item>https://github.com/saeedsh92/Banner-Slider</item>
+        <item>https://github.com/ongakuer/CircleIndicator</item>
+        <item>https://github.com/douglasjunior/android-simple-tooltip</item>
+        <item>https://github.com/ChadCSong/ShineButton</item>
+        <item>https://github.com/GrenderG/Toasty</item>
+    </string-array>
+
+</resources>

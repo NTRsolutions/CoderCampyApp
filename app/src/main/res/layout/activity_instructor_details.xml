@@ -1,198 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="12dp"
+    android:fitsSystemWindows="true"
     tools:context="com.gmonetix.codercampy.ui.activity.InstructorDetailsActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <FrameLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_back_colored"
+            app:titleTextColor="@color/colorPrimary"
+            android:background="@color/white"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/instructor_image"
-                android:transitionName="transition_image"
-                tools:src="@drawable/ic_default_user"
-                android:adjustViewBounds="true"
-                android:layout_width="120dp"
+                tools:src="@drawable/bg"
                 android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:layout_width="120dp"
                 android:layout_height="120dp" />
 
-            <ImageView
-                app:srcCompat="@drawable/ic_back_white"
-                android:layout_margin="4dp"
-                android:onClick="back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </FrameLayout>
-
-        <android.support.v4.widget.Space
-            android:layout_width="match_parent"
-            android:layout_height="12dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:background="@drawable/white_rounded"
-            android:orientation="vertical">
-
-            <com.balysv.materialripple.MaterialRippleLayout
-                app:mrl_rippleAlpha="0.1"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/instructor_name"
-                    android:padding="6dp"
-                    android:textSize="14sp"
-                    android:transitionName="transition_name"
-                    android:textColor="@color/black"
-                    android:drawableLeft="@drawable/ic_user_colored_support"
-                    android:drawablePadding="16dp"
-                    android:gravity="center|start"
-                    android:text="name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.balysv.materialripple.MaterialRippleLayout>
-
-            <com.balysv.materialripple.MaterialRippleLayout
-                app:mrl_rippleAlpha="0.1"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/instructor_email"
-                    android:padding="6dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/black"
-                    android:drawableLeft="@drawable/ic_email_support"
-                    android:drawablePadding="16dp"
-                    android:gravity="center|start"
-                    android:text="example@codercampy.com"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.balysv.materialripple.MaterialRippleLayout>
-
-            <com.balysv.materialripple.MaterialRippleLayout
-                app:mrl_rippleAlpha="0.1"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/instructor_phone"
-                    android:padding="6dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/black"
-                    android:drawableLeft="@drawable/ic_phone_colored_support"
-                    android:drawablePadding="16dp"
-                    android:gravity="center|start"
-                    android:text="+91 7478870112"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.balysv.materialripple.MaterialRippleLayout>
-
-
-            <com.balysv.materialripple.MaterialRippleLayout
-                app:mrl_rippleAlpha="0.1"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/instructor_bio"
-                    android:padding="6dp"
-                    android:textColor="@color/black"
-                    android:drawableLeft="@drawable/ic_description_colored_support"
-                    android:drawablePadding="16dp"
-                    android:gravity="center|start"
-                    android:textSize="12sp"
-                    android:text="this is a short description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.balysv.materialripple.MaterialRippleLayout>
-
-            <com.balysv.materialripple.MaterialRippleLayout
-                android:id="@+id/see_courses"
-                app:mrl_rippleAlpha="0.1"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true"
-                android:layout_gravity="end"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:padding="8dp"
-                    android:textColor="@color/colorPrimary"
-                    android:drawableRight="@drawable/ic_right_colored"
-                    android:drawablePadding="16dp"
-                    android:gravity="center"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:text="See all courses"
+
+                <ImageView
+                    android:id="@+id/fb"
+                    app:srcCompat="@drawable/ic_facebook"
+                    android:layout_marginRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-            </com.balysv.materialripple.MaterialRippleLayout>
 
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/linkedIn"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    app:srcCompat="@drawable/ic_linkedin_colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/white_rounded"
-            android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/call"
+                    app:srcCompat="@drawable/ic_phone_colored"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/email"
+                    app:srcCompat="@drawable/ic_email"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/whatsapp"
+                    android:layout_marginLeft="5dp"
+                    app:srcCompat="@drawable/ic_whatsapp_colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/instructor_bio"
+                android:padding="6dp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:textSize="12sp"
-                android:text="Categories"
-                android:textColor="@color/colorPrimary"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/main_font"
+                android:text="this is a short description"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycelrview_categories"
-                android:layout_marginTop="8dp"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:background="@drawable/white_rounded"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textSize="14sp"
+                    android:text="Categories"
+                    android:fontFamily="@font/main_font"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_height="wrap_content" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycelrview_categories"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/white_rounded"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/main_font"
+                    android:text="Languages"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_height="wrap_content" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycelrview_languages"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/white_rounded"
-            android:orientation="vertical">
+    </android.support.v4.widget.NestedScrollView>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:textSize="12sp"
-                android:text="Languages"
-                android:textColor="@color/colorPrimary"
-                android:layout_height="wrap_content" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycelrview_languages"
-                android:layout_marginTop="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</ScrollView>
+</android.support.design.widget.CoordinatorLayout>

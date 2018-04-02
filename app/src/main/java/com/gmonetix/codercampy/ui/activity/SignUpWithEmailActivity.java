@@ -19,6 +19,7 @@ import com.gmonetix.codercampy.model.User;
 import com.gmonetix.codercampy.networking.APIClient;
 import com.gmonetix.codercampy.networking.APIInterface;
 import com.gmonetix.codercampy.util.CoderCampy;
+import com.gmonetix.codercampy.util.DesignUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -48,6 +49,7 @@ public class SignUpWithEmailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        DesignUtil.applyFontForToolbarTitle(this);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

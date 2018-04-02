@@ -1,20 +1,275 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.gmonetix.codercampy.ui.fragment.HomeFragment">
 
-    <ss.com.bannerslider.views.BannerSlider
-        android:id="@+id/banner_slider"
-        app:interval="5000"
-        app:loopSlides="true"
-        app:defaultIndicators="round_square"
-        app:defaultBanner="1"
-        app:animateIndicators="true"
-        app:indicatorSize="12dp"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        />
+        android:layout_height="wrap_content">
 
-</LinearLayout>
+        <ss.com.bannerslider.views.BannerSlider
+            android:id="@+id/banner_slider"
+            app:interval="5000"
+            app:loopSlides="true"
+            app:selected_slideIndicator="@color/colorPrimary"
+            app:unselected_slideIndicator="@color/white"
+            app:defaultIndicators="circle"
+            app:defaultBanner="1"
+            app:animateIndicators="true"
+            app:indicatorSize="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            />
+
+        <android.support.v7.widget.CardView
+            app:cardCornerRadius="5dp"
+            android:elevation="5dp"
+            app:cardElevation="5dp"
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:padding="8dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Trending Courses"
+                    android:fontFamily="@font/main_font"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_gravity="center|start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/trending_courses_shimmer"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp"
+                    app:duration="1000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <include
+                            layout="@layout/row_home_placeholder" />
+
+                        <include
+                            layout="@layout/row_home_placeholder" />
+
+                        <include
+                            layout="@layout/row_home_placeholder" />
+
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/trending_courses_recyclerView"
+                    />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            app:cardCornerRadius="5dp"
+            android:elevation="5dp"
+            app:cardElevation="5dp"
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:padding="8dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Popular Courses"
+                    android:fontFamily="@font/main_font"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/popular_courses_shimmer"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp"
+                    app:duration="1000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <include
+                            layout="@layout/row_home_placeholder" />
+
+                        <include
+                            layout="@layout/row_home_placeholder" />
+
+                        <include
+                            layout="@layout/row_home_placeholder" />
+
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:visibility="gone"
+                    android:id="@+id/popular_courses_recyclerView"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            app:cardCornerRadius="5dp"
+            android:elevation="5dp"
+            app:cardElevation="5dp"
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:padding="8dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Trending Posts"
+                    android:fontFamily="@font/main_font"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/trending_posts_shimmer"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp"
+                    app:duration="1000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <include
+                            layout="@layout/row_home_placeholder" />
+
+                        <include
+                            layout="@layout/row_home_placeholder" />
+
+                        <include
+                            layout="@layout/row_home_placeholder" />
+
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/trending_posts_recyclerView"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            app:cardCornerRadius="5dp"
+            android:elevation="5dp"
+            app:cardElevation="5dp"
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:padding="8dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Popular Posts"
+                    android:fontFamily="@font/main_font"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/popular_posts_shimmer"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp"
+                    app:duration="1000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <include
+                            layout="@layout/row_home_placeholder" />
+
+                        <include
+                            layout="@layout/row_home_placeholder" />
+
+                        <include
+                            layout="@layout/row_home_placeholder" />
+
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/popular_posts_recyclerView"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>

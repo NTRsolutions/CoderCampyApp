@@ -6,13 +6,13 @@
 
         <SwitchPreference
             android:defaultValue="true"
-            android:title="Push Notification"
-            android:summary="Receive notification from admin" />
+            android:title="Course Notification"
+            android:summary="Receive notification for new course uploads" />
 
         <SwitchPreference
             android:defaultValue="true"
-            android:title="Course Notification"
-            android:summary="Receive notification for new course uploads" />
+            android:title="Blog Notification"
+            android:summary="Receive notification for new post uploads" />
 
     </PreferenceCategory>
 
@@ -33,18 +33,27 @@
         android:title="CoderCampy" >
 
         <Preference
-            android:title="FAQ"
-            android:summary="View Frequently Asked Questions" />
+            android:key="faq"
+            android:title="FAQ" />
 
         <Preference
-            android:title="Privacy Policy"
-            android:summary="View Privacy policy" />
+            android:key="privacy_policy"
+            android:title="Privacy Policy" />
 
         <Preference
-            android:title="Terms and Conditions"
-            android:summary="View Terms and Conditions" />
+            android:key="terms_and_conditions"
+            android:title="Terms and Conditions" />
 
         <Preference
+            android:key="youtube_terms_of_service"
+            android:title="Youtube Terms of Service"/>
+
+        <Preference
+            android:key="libraries"
+            android:title="Open Source Libraries" />
+
+        <Preference
+            android:key="version"
             android:title="Version"
             android:summary="v1.0.0 (Check for updates)" />
 

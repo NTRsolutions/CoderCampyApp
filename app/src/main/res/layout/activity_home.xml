@@ -15,7 +15,7 @@
 
     <android.support.design.widget.NavigationView
         android:layout_above="@+id/buttonPanel"
-        android:background="#263238"
+        android:background="#2e3d49"
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

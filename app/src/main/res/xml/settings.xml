@@ -5,11 +5,13 @@
         android:title="Notification" >
 
         <SwitchPreference
+            android:key="course_notification"
             android:defaultValue="true"
             android:title="Course Notification"
             android:summary="Receive notification for new course uploads" />
 
         <SwitchPreference
+            android:key="post_notification"
             android:defaultValue="true"
             android:title="Blog Notification"
             android:summary="Receive notification for new post uploads" />

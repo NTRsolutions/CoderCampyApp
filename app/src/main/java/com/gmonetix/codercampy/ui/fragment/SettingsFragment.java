@@ -4,7 +4,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.SwitchPreference;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.gmonetix.codercampy.R;
 import com.gmonetix.codercampy.adapter.LibraryAdapter;
@@ -24,14 +27,31 @@ public class SettingsFragment extends PreferenceFragment {
 
     private CustomTabActivityHelper mCustomTabActivityHelper;
 
+    private SwitchPreference courseNotiPref, postNotiPref;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
+        courseNotiPref = (SwitchPreference) findPreference("course_notification");
+        postNotiPref = (SwitchPreference) findPreference("post_notification");
+
         mCustomTabActivityHelper = new CustomTabActivityHelper();
         libraryAdapter = new LibraryAdapter(getActivity());
         libraryAdapter.setList(LibraryDataProvider.getData(getActivity()));
+
+        courseNotiPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if ((Boolean) newValue) {
+                    Log.e("TAG","true");
+                } else {
+                    Log.e("TAG","false");
+                }
+                return true;
+            }
+        });
 
         findPreference("libraries").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

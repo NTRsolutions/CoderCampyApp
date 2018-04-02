@@ -20,6 +20,7 @@ import com.gmonetix.codercampy.dialog.MoreDialog;
 import com.gmonetix.codercampy.model.User;
 import com.gmonetix.codercampy.networking.APIClient;
 import com.gmonetix.codercampy.networking.APIInterface;
+import com.gmonetix.codercampy.networking.NotificationUtil;
 import com.gmonetix.codercampy.ui.fragment.AllCoursesFragment;
 import com.gmonetix.codercampy.ui.fragment.BlogFragment;
 import com.gmonetix.codercampy.ui.fragment.FavouritesFragment;
@@ -109,8 +110,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         getSupportFragmentManager().beginTransaction().replace(R.id.home_container, HomeFragment.newInstance()).commit();
         this.setTitle("Home");
 
-        FirebaseMessaging.getInstance().subscribeToTopic(CoderCampy.TOPIC_COURSE);
-        Log.e("TAG", FirebaseInstanceId.getInstance().getToken());
+        //subscribe to pus notification
+        NotificationUtil.subscribeToAllTopic();
 
     }
 

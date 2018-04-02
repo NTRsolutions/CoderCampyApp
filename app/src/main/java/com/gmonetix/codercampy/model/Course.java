@@ -1,5 +1,12 @@
 package com.gmonetix.codercampy.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+import android.support.annotation.NonNull;
+
+import com.gmonetix.codercampy.database.LectureTypeConverter;
+import com.gmonetix.codercampy.database.TypeConverter;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -9,8 +16,11 @@ import java.util.List;
  * Created by Gaurav Bordoloi on 2/14/2018.
  */
 
+@Entity
 public class Course implements Serializable{
 
+    @PrimaryKey
+    @NonNull
     @SerializedName("_id")
     public String id;
 
@@ -35,9 +45,11 @@ public class Course implements Serializable{
     @SerializedName("is_active")
     public boolean is_active;
 
+    @TypeConverters(TypeConverter.class)
     @SerializedName("languages")
     public List<String> languages;
 
+    @TypeConverters(LectureTypeConverter.class)
     @SerializedName("lecture")
     public List<Lecture> lectures;
 
@@ -56,4 +68,5 @@ public class Course implements Serializable{
                 ", lectures=" + lectures +
                 '}';
     }
+
 }

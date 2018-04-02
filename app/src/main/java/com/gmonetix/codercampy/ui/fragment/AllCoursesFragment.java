@@ -1,5 +1,6 @@
 package com.gmonetix.codercampy.ui.fragment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,7 @@ import com.gmonetix.codercampy.networking.APIInterface;
 import com.gmonetix.codercampy.util.CourseItemAnimator;
 import com.gmonetix.codercampy.util.CourseItemDecoration;
 import com.gmonetix.codercampy.util.DesignUtil;
+import com.gmonetix.codercampy.viewmodel.HomeViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +63,8 @@ public class AllCoursesFragment extends Fragment implements SearchView.OnQueryTe
     private Integer[] selectedIndices;
     private int categoryIndex = 0;
 
+    private HomeViewModel homeViewModel;
+
     public AllCoursesFragment() { }
 
     public static AllCoursesFragment newInstance() {
@@ -92,57 +96,35 @@ public class AllCoursesFragment extends Fragment implements SearchView.OnQueryTe
            recyclerView.setHasFixedSize(true);
            recyclerView.setAdapter(adapter);
 
-           apiInterface.getAllCategories().enqueue(new Callback<List<Category>>() {
-               @Override
-               public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                   categoryList.addAll(response.body());
-               }
+           homeViewModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
 
-               @Override
-               public void onFailure(Call<List<Category>> call, Throwable t) {
-                   Log.e("Error",t.getMessage());
-               }
+           homeViewModel.getAllCategories().observe(this,allCategories->{
+
+               categoryList.addAll(allCategories);
+
            });
 
-           apiInterface.getAllLanguages().enqueue(new Callback<List<Language>>() {
-               @Override
-               public void onResponse(Call<List<Language>> call, Response<List<Language>> response) {
-                   languageList.addAll(response.body());
+           homeViewModel.getAllLanguages().observe(this,allLanguages->{
 
-                   selectedIndices = new Integer[languageList.size()];
-                   for (int i=0; i<languageList.size(); i++) {
-                       selectedIndices[i] = i;
-                   }
+               languageList.addAll(allLanguages);
 
+               selectedIndices = new Integer[languageList.size()];
+               for (int i=0; i<languageList.size(); i++) {
+                   selectedIndices[i] = i;
                }
 
-               @Override
-               public void onFailure(Call<List<Language>> call, Throwable t) {
-                   Log.e("Error",t.getMessage());
-               }
            });
 
-           apiInterface.getAllCourses().enqueue(new Callback<List<Course>>() {
-               @Override
-               public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
-                   if (response.body() != null) {
-                       courseList.addAll(response.body());
-                       list.addAll(response.body());
-                       adapter.setList(list);
+           homeViewModel.getAllCourses().observe(this,allCourseList->{
 
-                       shimmerFrameLayout.stopShimmerAnimation();
-                       shimmerFrameLayout.setVisibility(View.GONE);
-                       recyclerView.setVisibility(View.VISIBLE);
+               courseList.addAll(allCourseList);
+               list.addAll(allCourseList);
+               adapter.setList(list);
 
-                   } else {
-                       //TODO
-                   }
-               }
+               shimmerFrameLayout.stopShimmerAnimation();
+               shimmerFrameLayout.setVisibility(View.GONE);
+               recyclerView.setVisibility(View.VISIBLE);
 
-               @Override
-               public void onFailure(Call<List<Course>> call, Throwable t) {
-                   Log.e("Error",t.getMessage());
-               }
            });
 
        }

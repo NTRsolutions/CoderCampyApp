@@ -11,12 +11,10 @@
         <item>Butter Knife</item>
         <item>Gson</item>
         <item>Event Bus</item>
-        <item>Material Ripple</item>
         <item>Circle ImageView</item>
         <item>Material Dialogs</item>
         <item>Banner Slider</item>
         <item>Circle Indicator</item>
-        <item>Android Simple Tooltip</item>
         <item>Shine Button</item>
         <item>Toasty</item>
     </string-array>
@@ -31,12 +29,10 @@
         <item>http://jakewharton.github.io/butterknife/</item>
         <item>https://github.com/google/gson</item>
         <item>https://github.com/greenrobot/EventBus</item>
-        <item>https://github.com/balysv/material-ripple</item>
         <item>https://github.com/hdodenhof/CircleImageView</item>
         <item>https://github.com/afollestad/material-dialogs</item>
         <item>https://github.com/saeedsh92/Banner-Slider</item>
         <item>https://github.com/ongakuer/CircleIndicator</item>
-        <item>https://github.com/douglasjunior/android-simple-tooltip</item>
         <item>https://github.com/ChadCSong/ShineButton</item>
         <item>https://github.com/GrenderG/Toasty</item>
     </string-array>

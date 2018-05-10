@@ -81,7 +81,11 @@
         <TextView
             android:id="@+id/loginBtn"
             android:textSize="14sp"
-            android:layout_margin="20dp"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:focusable="true"
+            android:padding="4dp"
             android:fontFamily="@font/main_font"
             android:textColor="@color/colorPrimary"
             android:text="ALREADY A MEMBER? LOG IN"

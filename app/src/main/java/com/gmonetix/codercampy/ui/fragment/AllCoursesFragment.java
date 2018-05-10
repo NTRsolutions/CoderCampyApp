@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,18 +21,18 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.gmonetix.codercampy.R;
 import com.gmonetix.codercampy.adapter.CourseAdapter;
+import com.gmonetix.codercampy.listener.OnLoadMoreListener;
 import com.gmonetix.codercampy.model.Category;
 import com.gmonetix.codercampy.model.Course;
 import com.gmonetix.codercampy.model.Language;
 import com.gmonetix.codercampy.networking.APIClient;
 import com.gmonetix.codercampy.networking.APIInterface;
 import com.gmonetix.codercampy.util.CourseItemAnimator;
-import com.gmonetix.codercampy.util.CourseItemDecoration;
+import com.gmonetix.codercampy.util.GridItemDecoration;
 import com.gmonetix.codercampy.util.DesignUtil;
 import com.gmonetix.codercampy.viewmodel.HomeViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,6 +62,9 @@ public class AllCoursesFragment extends Fragment implements SearchView.OnQueryTe
     private Integer[] selectedIndices;
     private int categoryIndex = 0;
 
+    private int offset = 0;
+    private int limit = 2;
+
     private HomeViewModel homeViewModel;
 
     public AllCoursesFragment() { }
@@ -89,11 +91,11 @@ public class AllCoursesFragment extends Fragment implements SearchView.OnQueryTe
 
            apiInterface = APIClient.getClient().create(APIInterface.class);
 
-           adapter = new CourseAdapter(getActivity(),apiInterface);
            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
            recyclerView.setItemAnimator(new CourseItemAnimator());
-           recyclerView.addItemDecoration(new CourseItemDecoration(50));
+           recyclerView.addItemDecoration(new GridItemDecoration(50));
            recyclerView.setHasFixedSize(true);
+           adapter = new CourseAdapter(getActivity(),recyclerView,apiInterface);
            recyclerView.setAdapter(adapter);
 
            homeViewModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
@@ -115,7 +117,63 @@ public class AllCoursesFragment extends Fragment implements SearchView.OnQueryTe
 
            });
 
-           homeViewModel.getAllCourses().observe(this,allCourseList->{
+           apiInterface.getAllCourses(offset,limit,"overview,lecture").enqueue(new Callback<List<Course>>() {
+               @Override
+               public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
+                   if (response.body() != null) {
+
+                       courseList.addAll(response.body());
+                       list.addAll(response.body());
+                       adapter.setList(list);
+
+                       shimmerFrameLayout.stopShimmerAnimation();
+                       shimmerFrameLayout.setVisibility(View.GONE);
+                       recyclerView.setVisibility(View.VISIBLE);
+
+                   }
+               }
+
+               @Override
+               public void onFailure(Call<List<Course>> call, Throwable t) {
+
+               }
+           });
+
+           adapter.setOnLoadMoreListener(() -> {
+
+               if (courseList.size() % limit == 0) {
+
+                   offset = offset + limit;
+
+                   apiInterface.getAllCourses(offset,limit,"overview,lecture").enqueue(new Callback<List<Course>>() {
+                       @Override
+                       public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
+                           if (response.body() != null) {
+
+                               courseList.addAll(response.body());
+                               list.addAll(response.body());
+                               adapter.setList(list);
+
+                               shimmerFrameLayout.stopShimmerAnimation();
+                               shimmerFrameLayout.setVisibility(View.GONE);
+                               recyclerView.setVisibility(View.VISIBLE);
+
+                           }
+                       }
+
+                       @Override
+                       public void onFailure(Call<List<Course>> call, Throwable t) {
+
+                       }
+                   });
+
+               } else {
+                   Toast.makeText(getActivity(), "Loading data completed", Toast.LENGTH_SHORT).show();
+               }
+
+           });
+
+           /*homeViewModel.getAllCourses().observe(this,allCourseList->{
 
                courseList.addAll(allCourseList);
                list.addAll(allCourseList);
@@ -125,7 +183,7 @@ public class AllCoursesFragment extends Fragment implements SearchView.OnQueryTe
                shimmerFrameLayout.setVisibility(View.GONE);
                recyclerView.setVisibility(View.VISIBLE);
 
-           });
+           });*/
 
        }
 

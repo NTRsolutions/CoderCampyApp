@@ -11,4 +11,6 @@ public class Response {
     @SerializedName("code")
     public String code;
 
+    public String message;
+
 }

@@ -1,5 +1,6 @@
 package com.gmonetix.codercampy.ui.activity;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DividerItemDecoration;
@@ -31,6 +32,8 @@ import com.gmonetix.codercampy.networking.APIInterface;
 import com.gmonetix.codercampy.ui.fragment.DiscussionPanel;
 import com.gmonetix.codercampy.util.DesignUtil;
 import com.gmonetix.codercampy.util.NestedWebView;
+import com.gmonetix.codercampy.viewmodel.RatingViewModel;
+import com.gmonetix.codercampy.viewmodel.UserViewModel;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -70,6 +73,8 @@ public class ClassRoomActivity extends AppCompatActivity implements YouTubePlaye
     private DiscussionPanel discussionPanel;
 
     private APIInterface apiInterface;
+    private UserViewModel userViewModel;
+    private RatingViewModel ratingViewModel;
 
     String pish = "<html><head><style type=\"text/css\">@font-face {font-family: MyFont;src: url(\"file:///android_asset/open_sans_regular.ttf\")}body {font-family: MyFont;font-size: medium;text-align: justify;}</style></head><body>";
     String pas = "</body></html>";
@@ -98,6 +103,8 @@ public class ClassRoomActivity extends AppCompatActivity implements YouTubePlaye
         }
 
         apiInterface = APIClient.getClient().create(APIInterface.class);
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        ratingViewModel = ViewModelProviders.of(this).get(RatingViewModel.class);
 
         if (App.getAuth().getCurrentUser() == null) {
             favBtn.setVisibility(View.GONE);
@@ -140,7 +147,7 @@ public class ClassRoomActivity extends AppCompatActivity implements YouTubePlaye
         courseInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CourseInfoDialog(ClassRoomActivity.this,course.image,course.name,course.category,course.languages,course.description).show();
+                CourseInfoDialog.newInstance(course.image,course.name,course.category,course.languages,course.description).show(getFragmentManager(),"InfoDialog");
             }
         });
 
@@ -226,7 +233,7 @@ public class ClassRoomActivity extends AppCompatActivity implements YouTubePlaye
                 break;
 
             case R.id.menu_rating:
-                new RatingDialog(this,course.id,true).show();
+                RatingDialog.newInstance(course.id,true).show(getFragmentManager(),"RatingDialog");
                 break;
 
             case R.id.menu_discussions:

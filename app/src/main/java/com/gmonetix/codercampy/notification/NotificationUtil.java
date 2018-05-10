@@ -1,4 +1,4 @@
-package com.gmonetix.codercampy.networking;
+package com.gmonetix.codercampy.notification;
 
 import com.gmonetix.codercampy.util.CoderCampy;
 import com.google.firebase.messaging.FirebaseMessaging;

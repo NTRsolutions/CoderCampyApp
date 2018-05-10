@@ -24,6 +24,8 @@ public class User {
 
     public String uid;
 
+    public String bio;
+
     public List<String> favourites;
 
     public User(String email, String name, String image, String provider, String uid) {

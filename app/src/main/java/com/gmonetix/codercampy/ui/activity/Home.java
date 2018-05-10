@@ -1,5 +1,6 @@
 package com.gmonetix.codercampy.ui.activity;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -20,17 +20,14 @@ import com.gmonetix.codercampy.dialog.MoreDialog;
 import com.gmonetix.codercampy.model.User;
 import com.gmonetix.codercampy.networking.APIClient;
 import com.gmonetix.codercampy.networking.APIInterface;
-import com.gmonetix.codercampy.networking.NotificationUtil;
+import com.gmonetix.codercampy.notification.NotificationUtil;
 import com.gmonetix.codercampy.ui.fragment.AllCoursesFragment;
 import com.gmonetix.codercampy.ui.fragment.BlogFragment;
 import com.gmonetix.codercampy.ui.fragment.FavouritesFragment;
 import com.gmonetix.codercampy.ui.fragment.HomeFragment;
 import com.gmonetix.codercampy.ui.fragment.InstructorsFragment;
-import com.gmonetix.codercampy.util.CoderCampy;
 import com.gmonetix.codercampy.util.DesignUtil;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.gmonetix.codercampy.viewmodel.HomeViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,8 +44,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     MenuItem homeItem, myAccountItem, loginItem, favItem;
 
-    private APIInterface apiInterface;
     public static User user;
+    private HomeViewModel homeViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,25 +74,19 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         myAccountItem = navMenu.getItem(5).getSubMenu().getItem(0);
         loginItem = navMenu.getItem(5).getSubMenu().getItem(3);
 
-        apiInterface = APIClient.getClient().create(APIInterface.class);
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
 
         if (App.getAuth().getCurrentUser() != null) {
+
             loginItem.setIcon(R.drawable.ic_logout);
             loginItem.setTitle("Sign Out");
             favItem.setVisible(true);
             myAccountItem.setVisible(true);
 
-            apiInterface.getUser(App.getAuth().getCurrentUser().getUid()).enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    user = response.body();
-                    Toast.makeText(Home.this, "done", Toast.LENGTH_SHORT).show();
-                }
+            homeViewModel.getUser().observe(this,u->{
 
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
+                user = u;
 
-                }
             });
 
         } else {
@@ -104,8 +95,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             favItem.setVisible(false);
             myAccountItem.setVisible(false);
         }
-
-        apiInterface = APIClient.getClient().create(APIInterface.class);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.home_container, HomeFragment.newInstance()).commit();
         this.setTitle("Home");

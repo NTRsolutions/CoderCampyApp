@@ -23,7 +23,7 @@ import com.gmonetix.codercampy.networking.APIClient;
 import com.gmonetix.codercampy.networking.APIInterface;
 import com.gmonetix.codercampy.ui.activity.Home;
 import com.gmonetix.codercampy.util.CourseItemAnimator;
-import com.gmonetix.codercampy.util.CourseItemDecoration;
+import com.gmonetix.codercampy.util.GridItemDecoration;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -66,10 +66,10 @@ public class FavouritesFragment extends Fragment implements SearchView.OnQueryTe
             apiInterface = APIClient.getClient().create(APIInterface.class);
 
             courseList = new ArrayList<>();
-            adapter = new CourseAdapter(getActivity(),apiInterface);
+//            adapter = new CourseAdapter(getActivity(),apiInterface);
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
             recyclerView.setItemAnimator(new CourseItemAnimator());
-            recyclerView.addItemDecoration(new CourseItemDecoration(50));
+            recyclerView.addItemDecoration(new GridItemDecoration(50));
             recyclerView.setHasFixedSize(true);
             recyclerView.setAdapter(adapter);
 

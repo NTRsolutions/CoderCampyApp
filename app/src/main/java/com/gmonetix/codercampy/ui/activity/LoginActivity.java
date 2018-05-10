@@ -42,8 +42,12 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,78 +83,58 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         setSupportActionBar(toolbar);
         DesignUtil.applyFontForToolbarTitle(this);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         mAuth = FirebaseAuth.getInstance();
 
         facebook();
         google();
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(v -> login());
 
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
+        mAuthListener = firebaseAuth -> {
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
 
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            if (user != null) {
 
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                updateUI(user);
 
-                if (user != null) {
-
-                    updateUI(user);
-
-                }
             }
         };
 
-        frgotPswd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new MaterialDialog.Builder(LoginActivity.this)
-                        .title("Reset password")
-                        .typeface(DesignUtil.getTypeFace(LoginActivity.this),DesignUtil.getTypeFace(LoginActivity.this))
-                        .content("Link will be sent to your registered email")
-                        .autoDismiss(false)
-                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
-                        .input("registered email",null, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(final MaterialDialog dialog, CharSequence input) {
-                                String e = input.toString();
-                                if (!e.isEmpty() || Patterns.EMAIL_ADDRESS.matcher(e).matches()) {
+        frgotPswd.setOnClickListener(v -> new MaterialDialog.Builder(LoginActivity.this)
+                .title("Reset password")
+                .typeface(DesignUtil.getTypeFace(LoginActivity.this),DesignUtil.getTypeFace(LoginActivity.this))
+                .content("Link will be sent to your registered email")
+                .autoDismiss(false)
+                .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+                .input("registered email",null, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(final MaterialDialog dialog, CharSequence input) {
+                        String e = input.toString();
+                        if (!e.isEmpty() || Patterns.EMAIL_ADDRESS.matcher(e).matches()) {
 
-                                    App.getAuth().sendPasswordResetEmail(e)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
+                            App.getAuth().sendPasswordResetEmail(e)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
 
-                                                        Toast.makeText(LoginActivity.this, "Reset link sent to your email", Toast.LENGTH_SHORT).show();
-                                                        dialog.dismiss();
+                                                Toast.makeText(LoginActivity.this, "Reset link sent to your email", Toast.LENGTH_SHORT).show();
+                                                dialog.dismiss();
 
-                                                    } else {
-                                                        Toast.makeText(LoginActivity.this, "Error - " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-                                            });
+                                            } else {
+                                                Toast.makeText(LoginActivity.this, "Error - " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
 
-                                } else {
+                        } else {
 
-                                }
-                            }
-                        }).show();
-            }
-        });
+                        }
+                    }
+                }).show());
 
     }
 
@@ -161,12 +145,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        googleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, GOOGLE_SIGN_IN);
-            }
+        googleBtn.setOnClickListener(view -> {
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, GOOGLE_SIGN_IN);
         });
     }
 
@@ -180,17 +161,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
 
                 mAuth.signInWithCredential(credential)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                        .addOnCompleteListener(LoginActivity.this, task -> {
 
-                                if (task.isSuccessful()) {
+                            if (task.isSuccessful()) {
 
-                                    updateUI(mAuth.getCurrentUser());
+                                Map map = new HashMap();
+                                map.put(task.getResult().getUser().getUid(), FirebaseInstanceId.getInstance().getToken());
 
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                                FirebaseDatabase.getInstance().getReference("fcmTokens").setValue(map);
+
+                                updateUI(mAuth.getCurrentUser());
+
+                            } else {
+                                Toast.makeText(LoginActivity.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -206,13 +189,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         };
 
-        fbBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
-                        Arrays.asList("email","public_profile"));
-            }
-        });
+        fbBtn.setOnClickListener(view -> LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
+                Arrays.asList("email","public_profile")));
 
         LoginManager.getInstance().registerCallback(callbackManager,callback);
 
@@ -227,18 +205,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         String password = passwordText.getEditText().getText().toString();
 
         mAuth.signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                .addOnCompleteListener(task -> {
 
-                        if (task.isSuccessful()) {
+                    if (task.isSuccessful()) {
 
-                            updateUI(mAuth.getCurrentUser());
+                        Map map = new HashMap();
+                        map.put(task.getResult().getUser().getUid(), FirebaseInstanceId.getInstance().getToken());
 
-                        } else {
-                            String err = task.getException().getMessage();
-                            Toast.makeText(LoginActivity.this, "" + err, Toast.LENGTH_SHORT).show();
-                        }
+                        FirebaseDatabase.getInstance().getReference("fcmTokens").setValue(map);
+
+                        updateUI(mAuth.getCurrentUser());
+
+                    } else {
+                        String err = task.getException().getMessage();
+                        Toast.makeText(LoginActivity.this, "" + err, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -314,18 +294,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         final AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                .addOnCompleteListener(this, task -> {
 
-                        if (task.isSuccessful()) {
+                    if (task.isSuccessful()) {
 
-                            updateUI(mAuth.getCurrentUser());
+                        Map map = new HashMap();
+                        map.put(task.getResult().getUser().getUid(), FirebaseInstanceId.getInstance().getToken());
 
-                        } else {
+                        FirebaseDatabase.getInstance().getReference("fcmTokens").setValue(map);
 
-                            Toast.makeText(LoginActivity.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                        updateUI(mAuth.getCurrentUser());
+
+                    } else {
+
+                        Toast.makeText(LoginActivity.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

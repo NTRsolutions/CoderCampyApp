@@ -1,24 +1,23 @@
 package com.gmonetix.codercampy.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.gmonetix.codercampy.R;
+import com.gmonetix.codercampy.listener.OnLoadMoreListener;
 import com.gmonetix.codercampy.model.Discussion;
-import com.gmonetix.codercampy.model.Name;
-import com.gmonetix.codercampy.networking.APIInterface;
 import com.gmonetix.codercampy.util.GetTimeAgo;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Gaurav Bordoloi on 2/15/2018.
@@ -29,11 +28,41 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Di
     private Context context;
     private List<Discussion> discussionList = new ArrayList<>();
 
-    private APIInterface apiInterface;
+    private boolean isLoading;
+    private int visibleThreshold = 5;
+    private int lastVisibleItem, totalItemCount;
+    private OnLoadMoreListener onLoadMoreListener;
 
-    public DiscussionAdapter(Context context, APIInterface apiInterface) {
+    private RequestManager glide;
+
+    public DiscussionAdapter(Context context, RecyclerView recyclerView) {
         this.context = context;
-        this.apiInterface = apiInterface;
+        glide = Glide.with(context);
+
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                totalItemCount = linearLayoutManager.getItemCount();
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                    if (onLoadMoreListener != null) {
+                        onLoadMoreListener.onLoadMore();
+                    }
+                    isLoading = true;
+                }
+            }
+        });
+
+    }
+
+    public void setLoaded() {
+        isLoading = false;
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
+        this.onLoadMoreListener = mOnLoadMoreListener;
     }
 
     public void setList(List<Discussion> discussionList) {
@@ -51,21 +80,10 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Di
     public void onBindViewHolder(final DiscussionViewHolder holder, int position) {
         Discussion discussion = discussionList.get(position);
 
-        holder.discussionName.setText(discussion.uid);
-        holder.discussionTime.setText(GetTimeAgo.getTimeAgo(Long.parseLong(discussion.timestamp),context));
+        holder.discussionName.setText(discussion.user.name);
+        holder.discussionTime.setText(GetTimeAgo.getTimeAgo(discussion.timestamp,context));
         holder.discussionMessage.setText(discussion.message);
-
-        apiInterface.getUserNameByUid(discussion.uid).enqueue(new Callback<Name>() {
-            @Override
-            public void onResponse(Call<Name> call, Response<Name> response) {
-                holder.discussionName.setText(response.body().name);
-            }
-
-            @Override
-            public void onFailure(Call<Name> call, Throwable t) {
-                Log.e("TAG","error - " + t.getMessage());
-            }
-        });
+        glide.load(discussion.user.image).into(holder.imageView);
 
     }
 
@@ -79,6 +97,7 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionAdapter.Di
         @BindView(R.id.discussion_name) TextView discussionName;
         @BindView(R.id.discussion_time) TextView discussionTime;
         @BindView(R.id.discussion_message) TextView discussionMessage;
+        @BindView(R.id.profile_image) CircleImageView imageView;
 
         public DiscussionViewHolder(View itemView) {
             super(itemView);

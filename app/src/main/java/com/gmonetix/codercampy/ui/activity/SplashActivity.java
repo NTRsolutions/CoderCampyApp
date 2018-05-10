@@ -8,14 +8,10 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-
-import com.balysv.materialripple.MaterialRippleLayout;
 import com.gmonetix.codercampy.App;
 import com.gmonetix.codercampy.R;
 import com.gmonetix.codercampy.ui.fragment.SplashFragment;
 import com.google.firebase.auth.FirebaseUser;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,7 +19,6 @@ import me.relex.circleindicator.CircleIndicator;
 
 public class SplashActivity extends AppCompatActivity {
 
-    @BindView(R.id.skip) MaterialRippleLayout skip;
     @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.slide_indicator) CircleIndicator circleIndicator;
 
@@ -47,13 +42,6 @@ public class SplashActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         circleIndicator.setViewPager(viewPager);
 
-        skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startHomeActivity();
-            }
-        });
-
     }
 
     class MyFragmentPagerAdapter extends FragmentStatePagerAdapter {
@@ -74,6 +62,11 @@ public class SplashActivity extends AppCompatActivity {
             return 3;
         }
 
+    }
+
+    @OnClick(R.id.skip)
+    void skip() {
+        startHomeActivity();
     }
 
     @OnClick(R.id.btn_login)

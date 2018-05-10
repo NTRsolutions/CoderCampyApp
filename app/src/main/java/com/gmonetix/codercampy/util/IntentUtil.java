@@ -66,21 +66,20 @@ public class IntentUtil {
         return PendingIntent.getBroadcast(context, actionSource, actionIntent, 0);
     }
 
-    public static void whatsAppUs(Context context) {
+    public static void whatsApp(Context context, String phone) {
         Intent sendIntent = new Intent("android.intent.action.MAIN");
         sendIntent.setAction(Intent.ACTION_VIEW);
         sendIntent.setPackage("com.whatsapp");
-        String url = "https://api.whatsapp.com/send?phone=" + CoderCampy.OFFICIAL_PHONE + "&text=";
+        String url = "https://api.whatsapp.com/send?phone=" + phone + "&text=";
         sendIntent.setData(Uri.parse(url));
         context.startActivity(sendIntent);
     }
 
-    public static void callUs(Context context) {
+    public static void call(Context context, String phone) {
         Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:+917478870112"));
+        callIntent.setData(Uri.parse("tel:" + phone));
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(context, "Permission not granted", Toast.LENGTH_SHORT).show();
-            //TODO set permission
         } else context.startActivity(callIntent);
     }
 
@@ -102,11 +101,11 @@ public class IntentUtil {
         }
     }
 
-    public static void sendEmail(Context context) {
+    public static void sendEmail(Context context, String email, String subject) {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
         emailIntent.setData(Uri.parse("mailto:"));
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@codercampy.com"});
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         emailIntent.putExtra(Intent.EXTRA_TEXT, "");
         try {
             context.startActivity(Intent.createChooser(emailIntent, "choose one"));

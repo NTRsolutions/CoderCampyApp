@@ -58,17 +58,22 @@ public class MoreDialog extends AppCompatDialog {
 
     @OnClick(R.id.email_us)
     void emailUs() {
-        IntentUtil.sendEmail(getContext());
+        IntentUtil.sendEmail(getContext(),CoderCampy.OFFICIAL_EMAIL,"Contact from App");
     }
 
     @OnClick(R.id.call_us)
     void callUs() {
-        IntentUtil.callUs(getContext());
+        IntentUtil.call(getContext(),CoderCampy.OFFICIAL_PHONE);
     }
 
     @OnClick(R.id.whatsapp_us)
     void whatsAppUs() {
-        IntentUtil.whatsAppUs(getContext());
+        String s = CoderCampy.OFFICIAL_PHONE;
+        if (s.contains("+")) {
+            s = s.replace("+","");
+        }
+
+        IntentUtil.whatsApp(getContext(),s);
     }
 
     @OnClick(R.id.rate_us)

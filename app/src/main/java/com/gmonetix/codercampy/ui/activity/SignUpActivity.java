@@ -39,7 +39,13 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -70,30 +76,20 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
 
         setSupportActionBar(toolbar);
         DesignUtil.applyFontForToolbarTitle(this);
-        /*toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });*/
 
         apiInterface = APIClient.getClient().create(APIInterface.class);
 
         facebook();
         google();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        mAuthListener = firebaseAuth -> {
 
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
 
-                if (user != null) {
+                updateUI(user);
 
-                    updateUI(user);
-
-                }
             }
         };
 
@@ -124,6 +120,11 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
 
                                 if (task.isSuccessful()) {
                                     FirebaseUser firebaseUser = task.getResult().getUser();
+
+                                    Map map = new HashMap();
+                                    map.put(firebaseUser.getUid(), FirebaseInstanceId.getInstance().getToken());
+
+                                    FirebaseDatabase.getInstance().getReference("fcmTokens").setValue(map);
 
                                     User user = new User(firebaseUser.getEmail(),firebaseUser.getDisplayName(),firebaseUser.getPhotoUrl().toString(), CoderCampy.AUTH_PROVIDER_FACEBOOK,firebaseUser.getUid());
 
@@ -198,6 +199,11 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
 
                         if (task.isSuccessful()) {
                             FirebaseUser firebaseUser = task.getResult().getUser();
+
+                            Map map = new HashMap();
+                            map.put(firebaseUser.getUid(), FirebaseInstanceId.getInstance().getToken());
+
+                            FirebaseDatabase.getInstance().getReference("fcmTokens").setValue(map);
 
                             User user = new User(firebaseUser.getEmail(),firebaseUser.getDisplayName(),firebaseUser.getPhotoUrl().toString(), CoderCampy.AUTH_PROVIDER_GOOGLE,firebaseUser.getUid());
 

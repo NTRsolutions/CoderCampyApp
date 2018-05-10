@@ -39,23 +39,18 @@
             android:background="@color/white"
             android:layout_height="wrap_content" />
 
-        <com.balysv.materialripple.MaterialRippleLayout
+        <ImageView
             android:id="@+id/send"
-            app:mrl_rippleAlpha="0.1"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true"
+            android:layout_gravity="center"
+            android:layout_margin="6dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:focusable="true"
+            android:clickable="true"
+            android:padding="4dp"
+            app:srcCompat="@drawable/ic_send"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:layout_gravity="center"
-                android:layout_margin="6dp"
-                app:srcCompat="@drawable/ic_send"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </com.balysv.materialripple.MaterialRippleLayout>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

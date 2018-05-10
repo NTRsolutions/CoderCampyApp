@@ -1,12 +1,12 @@
 package com.gmonetix.codercampy.ui.fragment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,24 +15,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.gmonetix.codercampy.R;
 import com.gmonetix.codercampy.adapter.BlogAdapter;
 import com.gmonetix.codercampy.model.Blog;
 import com.gmonetix.codercampy.model.Category;
 import com.gmonetix.codercampy.model.Language;
-import com.gmonetix.codercampy.networking.APIClient;
-import com.gmonetix.codercampy.networking.APIInterface;
 import com.gmonetix.codercampy.util.DesignUtil;
-
+import com.gmonetix.codercampy.viewmodel.HomeViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,8 +35,6 @@ public class BlogFragment extends Fragment implements SearchView.OnQueryTextList
 
     private View rootView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
-
-    private APIInterface apiInterface;
 
     private List<Blog> blogList;
     private List<Blog> list;
@@ -55,6 +47,8 @@ public class BlogFragment extends Fragment implements SearchView.OnQueryTextList
     private List<Category> categoryList;
     private Integer[] selectedIndices;
     private int categoryIndex = 0;
+
+    private HomeViewModel homeViewModel;
 
     public BlogFragment() { }
 
@@ -69,8 +63,6 @@ public class BlogFragment extends Fragment implements SearchView.OnQueryTextList
             ButterKnife.bind(this,rootView);
             setHasOptionsMenu(true);
 
-            apiInterface = APIClient.getClient().create(APIInterface.class);
-
             blogList = new ArrayList<>();
             list = new ArrayList<>();
             languageList = new ArrayList<>();
@@ -82,48 +74,31 @@ public class BlogFragment extends Fragment implements SearchView.OnQueryTextList
             adapter = new BlogAdapter(getActivity());
             recyclerView.setAdapter(adapter);
 
-            apiInterface.getAllCategories().enqueue(new Callback<List<Category>>() {
-                @Override
-                public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                    categoryList.addAll(response.body());
-                }
+            homeViewModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
 
-                @Override
-                public void onFailure(Call<List<Category>> call, Throwable t) {
-                    Log.e("Error",t.getMessage());
-                }
+            homeViewModel.getAllCategories().observe(this,allCategories->{
+
+                categoryList.addAll(allCategories);
+
             });
 
-            apiInterface.getAllLanguages().enqueue(new Callback<List<Language>>() {
-                @Override
-                public void onResponse(Call<List<Language>> call, Response<List<Language>> response) {
-                    languageList.addAll(response.body());
+            homeViewModel.getAllLanguages().observe(this,allLanguages->{
 
-                    selectedIndices = new Integer[languageList.size()];
-                    for (int i=0; i<languageList.size(); i++) {
-                        selectedIndices[i] = i;
-                    }
+                languageList.addAll(allLanguages);
 
+                selectedIndices = new Integer[languageList.size()];
+                for (int i=0; i<languageList.size(); i++) {
+                    selectedIndices[i] = i;
                 }
 
-                @Override
-                public void onFailure(Call<List<Language>> call, Throwable t) {
-                    Log.e("Error",t.getMessage());
-                }
             });
 
-            apiInterface.getAllBlogs().enqueue(new Callback<List<Blog>>() {
-                @Override
-                public void onResponse(Call<List<Blog>> call, Response<List<Blog>> response) {
-                    blogList.addAll(response.body());
-                    list.addAll(response.body());
-                    adapter.setList(list);
-                }
+            homeViewModel.getAllBlogs().observe(this,allBlogs->{
 
-                @Override
-                public void onFailure(Call<List<Blog>> call, Throwable t) {
-                    Toast.makeText(getActivity(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                blogList.addAll(allBlogs);
+                list.addAll(allBlogs);
+                adapter.setList(list);
+
             });
 
         }

@@ -22,10 +22,12 @@
         android:title="Other" >
 
         <Preference
+            android:key="clear_cache"
             android:title="Clear Cache"
             android:summary="Clear app cache" />
 
         <Preference
+            android:key="bug_report"
             android:title="Bug Report"
             android:summary="Found any bugs? Report us immediately" />
 

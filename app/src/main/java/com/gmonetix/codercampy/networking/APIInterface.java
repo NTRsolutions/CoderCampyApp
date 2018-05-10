@@ -22,12 +22,17 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by Gaurav Bordoloi on 2/28/2018.
  */
 
 public interface APIInterface {
+
+    @FormUrlEncoded
+    @POST("/upload.php")
+    Call<Response> uploadImage(@Field("image") String base64Image, @Field("uid") String uid);
 
     @FormUrlEncoded
     @POST("/add-fav")
@@ -71,8 +76,8 @@ public interface APIInterface {
     @GET("/instructor/{id}")
     Call<Instructor> getInstructor(@Path("id") String id);
 
-    @GET("/courses")
-    Call<List<Course>> getAllCourses();
+    @GET("/courses/{offset}&{limit}")
+    Call<List<Course>> getAllCourses(@Path("offset") int offset,@Path("limit") int limit,@Query("exclude") String exclude);
 
     @GET("/courses/{ids}")
     Call<List<Course>> getCourses(@Path("ids") String ids);
@@ -107,28 +112,16 @@ public interface APIInterface {
     @GET("/blog/{id}")
     Call<Blog> getBlog(@Path("id") String id);
 
-    @GET("/discussions/course/{id}")
-    Call<CourseDiscussion> getCourseDiscussionsById(@Path("id") String id);
+    @GET("/discussions/course/{id}&{offset}&{limit}")
+    Call<CourseDiscussion> getCourseDiscussionsById(@Path("id") String id,@Path("offset") int offset,@Path("limit") int limit);
 
-    @GET("/ratings/course/{id}")
-    Call<CourseRating> getCourseRatingsById(@Path("id") String id);
+    @GET("/discussions/blog/{id}&{offset}&{limit}")
+    Call<BlogDiscussion> getBlogDiscussionsById(@Path("id") String id,@Path("offset") int offset,@Path("limit") int limit);
 
-    @GET("/discussions/blog/{id}")
-    Call<BlogDiscussion> getBlogDiscussionsById(@Path("id") String id);
+    @GET("/ratings/course/{id}&{offset}&{limit}")
+    Call<CourseRating> getCourseRatingsById(@Path("id") String id,@Path("offset") int offset,@Path("limit") int limit);
 
-    @GET("/ratings/blog/{id}")
-    Call<BlogRating> getBlogRatingsById(@Path("id") String id);
-
-    /*
-    @GET("/api/users?")
-    Call<UserList> doGetUserList(@Query("page") String page);
-
-    @FormUrlEncoded
-    @POST("/api/users?")
-    Call<UserList> doCreateUserWithField(@Field("name") String name, @Field("job") String job);*/
-
-    /*@FormUrlEncoded
-    @POST("user/edit")
-    Call<User> updateUser (@Field("uid") String first, @Field("last_name") String last);*/
+    @GET("/ratings/blog/{id}&{offset}&{limit}")
+    Call<BlogRating> getBlogRatingsById(@Path("id") String id,@Path("offset") int offset,@Path("limit") int limit);
 
 }

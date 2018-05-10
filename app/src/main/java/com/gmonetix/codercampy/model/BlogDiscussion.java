@@ -14,7 +14,12 @@ public class BlogDiscussion implements Serializable{
     @SerializedName("blog_id")
     public String id;
 
-    @SerializedName("discussions")
-    public List<Discussion> discussions;
+    public String uid;
+
+    public long timestamp;
+
+    public String message;
+
+    public User user;
 
 }

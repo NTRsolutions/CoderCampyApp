@@ -21,8 +21,12 @@
 
             <ImageView
                 android:id="@+id/close_dialog"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:layout_gravity="end"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
+                android:padding="4dp"
                 app:srcCompat="@drawable/ic_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -48,6 +52,9 @@
                 android:textSize="14sp"
                 android:fontFamily="@font/main_font"
                 android:padding="8dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:focusable="true"
+                android:clickable="true"
                 android:textColor="@color/black"
                 android:layout_marginBottom="8dp"
                 android:layout_width="match_parent"

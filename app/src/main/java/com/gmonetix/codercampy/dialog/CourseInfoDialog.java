@@ -1,33 +1,32 @@
 package com.gmonetix.codercampy.dialog;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.app.DialogFragment;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatDialog;
-import android.util.Log;
-import android.view.Window;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.gmonetix.codercampy.R;
-import com.gmonetix.codercampy.model.Category;
 import com.gmonetix.codercampy.model.Language;
-import com.gmonetix.codercampy.networking.APIClient;
-import com.gmonetix.codercampy.networking.APIInterface;
+import com.gmonetix.codercampy.viewmodel.CourseViewModel;
+import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Gaurav Bordoloi on 3/31/2018.
  */
-public class CourseInfoDialog extends AppCompatDialog {
+public class CourseInfoDialog extends DialogFragment {
 
+    private View rootView;
     @BindView(R.id.course_image) ImageView courseImage;
     @BindView(R.id.course_name) TextView courseName;
     @BindView(R.id.course_category) TextView courseCategory;
@@ -37,52 +36,57 @@ public class CourseInfoDialog extends AppCompatDialog {
     private String image, name, description, categoryId;
     private List<String> languages;
 
-    private APIInterface apiInterface;
+    private CourseViewModel courseViewModel;
 
-    public CourseInfoDialog(Context context, String image, String courseName, String categoryId, List<String> languages, String description) {
-        super(context, R.style.Theme_AppCompat_Dialog);
-        this.image = image;
-        this.name = courseName;
-        this.categoryId = categoryId;
-        this.description = description;
-        this.languages = languages;
+    public CourseInfoDialog() {}
+
+    public static CourseInfoDialog newInstance(String image, String courseName, String categoryId, List<String> languages, String description) {
+        CourseInfoDialog f = new CourseInfoDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString("image",image);
+        bundle.putString("name",courseName);
+        bundle.putString("description",description);
+        bundle.putString("categoryId",categoryId);
+        bundle.putStringArrayList("languages", (ArrayList<String>) languages);
+        f.setArguments(bundle);
+        return f;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_course_info);
-        ButterKnife.bind(this);
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        image = getArguments().getString("image");
+        name = getArguments().getString("name");
+        description = getArguments().getString("description");
+        categoryId = getArguments().getString("categoryId");
+        languages = getArguments().getStringArrayList("languages");
+    }
 
-        apiInterface = APIClient.getClient().create(APIInterface.class);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        if (rootView == null) {
 
-        courseName.setText(name);
-        courseDescription.setText(description);
-        Glide.with(getContext()).load(image).into(courseImage);
+            rootView = inflater.inflate(R.layout.dialog_course_info,container,false);
+            ButterKnife.bind(this,rootView);
 
-        apiInterface.getCategory(categoryId).enqueue(new Callback<Category>() {
-            @Override
-            public void onResponse(Call<Category> call, Response<Category> response) {
-                if (response.body() != null) {
-                    courseCategory.setText(response.body().name);
-                }
-            }
+            courseViewModel = ViewModelProviders.of((FragmentActivity) getActivity()).get(CourseViewModel.class);
 
-            @Override
-            public void onFailure(Call<Category> call, Throwable t) {
-                Log.e("Error",t.getMessage());
-            }
-        });
+            courseName.setText(name);
+            courseDescription.setText(description);
+            Glide.with(getActivity()).load(image).into(courseImage);
 
-        apiInterface.getAllLanguages().enqueue(new Callback<List<Language>>() {
-            @Override
-            public void onResponse(Call<List<Language>> call, Response<List<Language>> response) {
+            courseViewModel.getCategory(categoryId).observe((LifecycleOwner) getActivity(), category -> {
+
+                courseCategory.setText(category.name);
+
+            });
+
+            courseViewModel.getAllLanguages().observe((LifecycleOwner) getActivity(), response -> {
 
                 StringBuilder s = new StringBuilder();
 
-                for (Language language : response.body()) {
+                for (Language language : response) {
 
                     if (languages.contains(language.id)) {
                         if (!s.toString().isEmpty())
@@ -94,14 +98,10 @@ public class CourseInfoDialog extends AppCompatDialog {
 
                 courseLanguage.setText(s.toString());
 
-            }
+            });
 
-            @Override
-            public void onFailure(Call<List<Language>> call, Throwable t) {
-                Log.e("Error",t.getMessage());
-            }
-        });
-
+        }
+        return rootView;
     }
 
     @OnClick(R.id.close_dialog)

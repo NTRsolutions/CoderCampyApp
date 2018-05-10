@@ -121,7 +121,7 @@ public class HomeFragment extends Fragment {
 
             });
 
-            homeViewModel.getAllCourses().observe(this,allCourseList->{
+            /*homeViewModel.getAllCourses().observe(this,allCourseList->{
 
                 courseList.clear();
                 courseList.addAll(allCourseList);
@@ -136,7 +136,7 @@ public class HomeFragment extends Fragment {
                 trendingCoursesRecyclerView.setVisibility(View.VISIBLE);
                 popularCoursesRecyclerView.setVisibility(View.VISIBLE);
 
-            });
+            });*/
 
             homeViewModel.getAllBlogs().observe(this,allBlogList -> {
 

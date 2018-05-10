@@ -6,30 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.balysv.materialripple.MaterialRippleLayout
+    <TextView
         android:id="@+id/skip"
-        app:mrl_rippleAlpha="0.2"
-        app:mrl_rippleHover="true"
-        app:mrl_rippleOverlay="true"
+        android:textSize="13sp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="SKIP"
         android:layout_margin="16dp"
-        app:mrl_rippleColor="@color/white"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:focusable="true"
+        android:clickable="true"
+        android:padding="12dp"
+        android:fontFamily="@font/main_font"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:textSize="13sp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="SKIP"
-            android:padding="12dp"
-            android:fontFamily="@font/main_font"
-            android:textColor="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.balysv.materialripple.MaterialRippleLayout>
+        android:layout_height="wrap_content" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
@@ -54,56 +47,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.balysv.materialripple.MaterialRippleLayout
-            app:mrl_rippleAlpha="0.1"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true"
-            app:mrl_rippleColor="@color/black"
+        <TextView
+            android:id="@+id/btn_login"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="LOG IN"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:focusable="true"
+            android:clickable="true"
+            android:fontFamily="@font/main_font"
+            android:padding="16dp"
+            android:textColor="@color/colorPrimary"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/btn_login"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="LOG IN"
-                android:fontFamily="@font/main_font"
-                android:padding="16dp"
-                android:textColor="@color/colorPrimary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </com.balysv.materialripple.MaterialRippleLayout>
+            android:layout_height="wrap_content" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="#9e9e9e" />
 
-        <com.balysv.materialripple.MaterialRippleLayout
-            app:mrl_rippleAlpha="0.1"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true"
-            app:mrl_rippleColor="@color/black"
+        <TextView
+            android:id="@+id/btn_signup"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="SIGN UP"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:focusable="true"
+            android:clickable="true"
+            android:fontFamily="@font/main_font"
+            android:padding="16dp"
+            android:textColor="@color/colorPrimary"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/btn_signup"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="SIGN UP"
-                android:fontFamily="@font/main_font"
-                android:padding="16dp"
-                android:textColor="@color/colorPrimary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </com.balysv.materialripple.MaterialRippleLayout>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

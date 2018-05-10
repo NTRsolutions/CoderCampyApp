@@ -9,11 +9,11 @@ import android.view.View;
  * Created by Gaurav Bordoloi on 3/28/2018.
  */
 
-public class CourseItemDecoration extends RecyclerView.ItemDecoration {
+public class GridItemDecoration extends RecyclerView.ItemDecoration {
 
     private int offset;
 
-    public CourseItemDecoration(int offset) {
+    public GridItemDecoration(int offset) {
         this.offset = offset;
     }
 

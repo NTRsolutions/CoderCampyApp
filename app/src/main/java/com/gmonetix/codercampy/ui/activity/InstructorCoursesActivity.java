@@ -1,5 +1,6 @@
 package com.gmonetix.codercampy.ui.activity;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,41 +8,37 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.gmonetix.codercampy.R;
 import com.gmonetix.codercampy.adapter.CourseAdapter;
 import com.gmonetix.codercampy.model.Course;
 import com.gmonetix.codercampy.networking.APIClient;
 import com.gmonetix.codercampy.networking.APIInterface;
 import com.gmonetix.codercampy.util.CourseItemAnimator;
-import com.gmonetix.codercampy.util.CourseItemDecoration;
+import com.gmonetix.codercampy.util.GridItemDecoration;
 import com.gmonetix.codercampy.util.DesignUtil;
-
+import com.gmonetix.codercampy.viewmodel.InstructorViewModel;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class InstructorCoursesActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.courses_shimmer) ShimmerFrameLayout shimmer;
     @BindView(R.id.toolbar) Toolbar toolbar;
 
     private List<Course> courseList;
     private CourseAdapter adapter;
 
     private APIInterface apiInterface;
+    private InstructorViewModel instructorViewModel;
 
     private MenuItem searchItem;
     private SearchView searchView;
@@ -56,12 +53,7 @@ public class InstructorCoursesActivity extends AppCompatActivity implements Sear
 
         setSupportActionBar(toolbar);
         DesignUtil.applyFontForToolbarTitle(this);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         if (getIntent() != null) {
             instructorId = getIntent().getStringExtra("instructor_id");
@@ -70,31 +62,28 @@ public class InstructorCoursesActivity extends AppCompatActivity implements Sear
             //TODO
         }
 
+        shimmer.startShimmerAnimation();
+
         apiInterface = APIClient.getClient().create(APIInterface.class);
+        instructorViewModel = ViewModelProviders.of(this).get(InstructorViewModel.class);
 
         courseList = new ArrayList<>();
-        adapter = new CourseAdapter(this,apiInterface);
+//        adapter = new CourseAdapter(this,apiInterface);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.setItemAnimator(new CourseItemAnimator());
-        recyclerView.addItemDecoration(new CourseItemDecoration(50));
+        recyclerView.addItemDecoration(new GridItemDecoration(50));
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
+      //  recyclerView.setAdapter(adapter);
 
-        apiInterface.getCoursesByInstructorId(instructorId).enqueue(new Callback<List<Course>>() {
-            @Override
-            public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
-                if (response.body() != null) {
-                    courseList.addAll(response.body());
-                    adapter.setList(courseList);
-                } else {
-                    //TODO
-                }
-            }
+        instructorViewModel.getCourses(instructorId).observe(this,courses->{
 
-            @Override
-            public void onFailure(Call<List<Course>> call, Throwable t) {
-                Log.e("Error",t.getMessage());
-            }
+            courseList.addAll(courses);
+            adapter.setList(courseList);
+
+            shimmer.stopShimmerAnimation();
+            shimmer.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+
         });
 
     }

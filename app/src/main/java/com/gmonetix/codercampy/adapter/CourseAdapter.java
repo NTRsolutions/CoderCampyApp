@@ -3,6 +3,8 @@ package com.gmonetix.codercampy.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.gmonetix.codercampy.App;
 import com.gmonetix.codercampy.R;
+import com.gmonetix.codercampy.listener.OnLoadMoreListener;
 import com.gmonetix.codercampy.model.Course;
 import com.gmonetix.codercampy.model.Response;
 import com.gmonetix.codercampy.networking.APIInterface;
@@ -49,10 +52,40 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     private RequestManager glide;
     private APIInterface apiInterface;
 
-    public CourseAdapter(Context context, APIInterface apiInterface) {
+    private boolean isLoading;
+    private int visibleThreshold = 5;
+    private int lastVisibleItem, totalItemCount;
+    private OnLoadMoreListener onLoadMoreListener;
+
+    public CourseAdapter(Context context, RecyclerView recyclerView, APIInterface apiInterface) {
         this.context = context;
         glide = Glide.with(context);
         this.apiInterface = apiInterface;
+
+        final GridLayoutManager gridLayoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                totalItemCount = gridLayoutManager.getItemCount();
+                lastVisibleItem = gridLayoutManager.findLastVisibleItemPosition();
+                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                    if (onLoadMoreListener != null) {
+                        onLoadMoreListener.onLoadMore();
+                    }
+                    isLoading = true;
+                }
+            }
+        });
+
+    }
+
+    public void setLoaded() {
+        isLoading = false;
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
+        this.onLoadMoreListener = mOnLoadMoreListener;
     }
 
     public void setList(List<Course> courseList) {
@@ -95,59 +128,53 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             }
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.itemView.setOnClickListener(v -> {
 
-                Intent intent = new Intent(context, ClassRoomActivity.class);
-                intent.putExtra(COURSE,(Serializable) course);
-                context.startActivity(intent);
+            Intent intent = new Intent(context, ClassRoomActivity.class);
+            intent.putExtra(COURSE,(Serializable) course);
+            context.startActivity(intent);
 
-            }
         });
 
-        holder.favBtn.setOnCheckStateChangeListener(new ShineButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(View view, boolean checked) {
-                if (checked) {
-                    apiInterface.addFav(course.id, App.getAuth().getCurrentUser().getUid()).enqueue(new Callback<Response>() {
-                        @Override
-                        public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                            if (response.body().code.equals("success")) {
-                                Home.user.favourites.add(course.id);
-                                Toasty.success(context,"Added to favourites", Toast.LENGTH_SHORT,true).show();
-                            } else {
-                                holder.favBtn.setChecked(false);
-                                Toasty.error(context,"Error adding to favourite", Toast.LENGTH_SHORT,true).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Response> call, Throwable t) {
+        holder.favBtn.setOnCheckStateChangeListener((view, checked) -> {
+            if (checked) {
+                apiInterface.addFav(course.id, App.getAuth().getCurrentUser().getUid()).enqueue(new Callback<Response>() {
+                    @Override
+                    public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                        if (response.body().code.equals("success")) {
+                            Home.user.favourites.add(course.id);
+                            Toasty.success(context,"Added to favourites", Toast.LENGTH_SHORT,true).show();
+                        } else {
                             holder.favBtn.setChecked(false);
                             Toasty.error(context,"Error adding to favourite", Toast.LENGTH_SHORT,true).show();
                         }
-                    });
-                } else {
-                    apiInterface.removeFav(course.id, App.getAuth().getCurrentUser().getUid()).enqueue(new Callback<Response>() {
-                        @Override
-                        public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                            if (response.body().code.equals("success")) {
-                                Home.user.favourites.remove(course.id);
-                                Toasty.success(context,"Removed from favourites", Toast.LENGTH_SHORT,true).show();
-                            } else {
-                                holder.favBtn.setChecked(true);
-                                Toasty.error(context,"Error removing from favourite", Toast.LENGTH_SHORT,true).show();
-                            }
-                        }
+                    }
 
-                        @Override
-                        public void onFailure(Call<Response> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<Response> call, Throwable t) {
+                        holder.favBtn.setChecked(false);
+                        Toasty.error(context,"Error adding to favourite", Toast.LENGTH_SHORT,true).show();
+                    }
+                });
+            } else {
+                apiInterface.removeFav(course.id, App.getAuth().getCurrentUser().getUid()).enqueue(new Callback<Response>() {
+                    @Override
+                    public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                        if (response.body().code.equals("success")) {
+                            Home.user.favourites.remove(course.id);
+                            Toasty.success(context,"Removed from favourites", Toast.LENGTH_SHORT,true).show();
+                        } else {
                             holder.favBtn.setChecked(true);
                             Toasty.error(context,"Error removing from favourite", Toast.LENGTH_SHORT,true).show();
                         }
-                    });
-                }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Response> call, Throwable t) {
+                        holder.favBtn.setChecked(true);
+                        Toasty.error(context,"Error removing from favourite", Toast.LENGTH_SHORT,true).show();
+                    }
+                });
             }
         });
 

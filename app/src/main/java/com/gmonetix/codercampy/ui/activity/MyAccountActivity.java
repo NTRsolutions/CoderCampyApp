@@ -1,18 +1,27 @@
 package com.gmonetix.codercampy.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.gmonetix.codercampy.App;
 import com.gmonetix.codercampy.R;
@@ -25,14 +34,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
+import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 
 public class MyAccountActivity extends AppCompatActivity {
 
+    private static final int PICK_IMAGE_REQUEST = 198;
+
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.image) ImageView imageView;
+    @BindView(R.id.image) CircleImageView imageView;
     @BindView(R.id.name) TextView tvName;
     @BindView(R.id.email) TextView tvEmail;
     @BindView(R.id.phone) TextView tvPhone;
@@ -40,7 +53,6 @@ public class MyAccountActivity extends AppCompatActivity {
     @BindView(R.id.changePass) AppCompatButton changePass;
 
     private User user;
-    private SimpleTooltip tooltip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,125 +93,158 @@ public class MyAccountActivity extends AppCompatActivity {
         tvPhone.setText(user.phone);
         Glide.with(this).load(user.image).apply(GlideOptions.getRequestOptions(R.drawable.ic_default_user,R.drawable.ic_default_user)).into(imageView);
 
-        tooltip = new SimpleTooltip.Builder(MyAccountActivity.this)
-                .anchorView(authProvider)
-                .text("You are logged in using this Auth provider")
-                .gravity(Gravity.BOTTOM)
-                .textColor(Color.WHITE)
-                .animated(true)
-                .transparentOverlay(false)
-                .build();
+        imageView.setOnClickListener(v -> {
 
-        /*tvName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            Log.e("TAG","Clciked");
 
-                new MaterialDialog.Builder(MyAccountActivity.this)
-                        .title("Change Name")
-                        .autoDismiss(false)
-                        .backgroundColor(getResources().getColor(R.color.colorPrimary))
-                        .content("Change your name.\nYour name appears on discussion and ratings page.")
-                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME)
-                        .input("new name", null, new MaterialDialog.InputCallback() {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+
+        });
+
+        tvName.setOnClickListener(v ->{
+
+            new MaterialDialog.Builder(MyAccountActivity.this)
+                    .title("Change Name")
+                    .autoDismiss(false)
+                    .typeface(DesignUtil.getTypeFace(MyAccountActivity.this),DesignUtil.getTypeFace(MyAccountActivity.this))
+                    .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME)
+                    .input("New Name", null, (dialog, input) -> {
+
+                        final String newName = input.toString().trim();
+                        if (!newName.isEmpty()) {
+
+                            dialog.dismiss();
+
+
+
+
+                        } else {
+                            Toasty.error(MyAccountActivity.this,"Name cannot be empty",Toast.LENGTH_SHORT,true).show();
+                        }
+
+                    })
+                    .negativeText("CANCEL")
+                    .onNegative((dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
+
+        });
+
+        tvEmail.setOnClickListener(v -> {
+
+            new MaterialDialog.Builder(MyAccountActivity.this)
+                    .title("Change Email")
+                    .autoDismiss(false)
+                    .typeface(DesignUtil.getTypeFace(MyAccountActivity.this),DesignUtil.getTypeFace(MyAccountActivity.this))
+                    .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+                    .input("New Email", null, (dialog, input) -> {
+
+                        final String newEmail = input.toString().trim();
+                        if (!newEmail.isEmpty()) {
+
+                            dialog.dismiss();
+
+
+
+
+                        } else {
+                            Toasty.error(MyAccountActivity.this,"Email cannot be empty",Toast.LENGTH_SHORT,true).show();
+                        }
+
+                    })
+                    .negativeText("CANCEL")
+                    .onNegative((dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
+
+        });
+
+        tvPhone.setOnClickListener(v -> {
+
+            new MaterialDialog.Builder(MyAccountActivity.this)
+                    .title("Change Phone")
+                    .autoDismiss(false)
+                    .typeface(DesignUtil.getTypeFace(MyAccountActivity.this),DesignUtil.getTypeFace(MyAccountActivity.this))
+                    .inputType(InputType.TYPE_CLASS_PHONE)
+                    .input("New Phone", null, (dialog, input) -> {
+
+                        final String newPhone = input.toString().trim();
+                        if (!newPhone.isEmpty()) {
+
+                            dialog.dismiss();
+
+
+
+
+                        } else {
+                            Toasty.error(MyAccountActivity.this,"Phone cannot be empty",Toast.LENGTH_SHORT,true).show();
+                        }
+
+                    })
+                    .negativeText("CANCEL")
+                    .onNegative((dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
+
+        });
+
+        authProvider.setOnClickListener(v -> Toasty.success(MyAccountActivity.this,"You are logged in using this Auth provider",Toast.LENGTH_SHORT,false).show());
+
+        changePass.setOnClickListener(v -> {
+            if (App.getAuth().getCurrentUser() != null) {
+
+                AuthCredential credential = EmailAuthProvider
+                        .getCredential("user@example.com", "password1234");
+
+                App.getAuth().getCurrentUser().reauthenticate(credential)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
 
-                                final String newName = input.toString().trim();
-                                if (!newName.isEmpty()) {
-
-                                    dialog.dismiss();
-                                    UserProfileChangeRequest nameUpdates = new UserProfileChangeRequest.Builder()
-                                            .setDisplayName(newName)
-                                            .build();
-
-                                    user.updateProfile(nameUpdates)
+                                    App.getAuth().getCurrentUser().updatePassword("")
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                    d.dismiss();
                                                     if (task.isSuccessful()) {
-                                                        tvName.setText(newName);
-                                                        Toast.makeText(MyAccountActivity.this, "Name updated successfully", Toast.LENGTH_SHORT).show();
-                                                    } else {
-                                                        Toast.makeText(MyAccountActivity.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
                                                     }
                                                 }
                                             });
 
-                                } else dialog.dismiss();
-
-                            }
-                        }).show();
-
-            }
-        });*/
-
-        tvEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-            }
-        });
-
-        tvPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-            }
-        });
-
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-            }
-        });
-
-        authProvider.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tooltip.show();
-            }
-        });
-
-        changePass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (App.getAuth().getCurrentUser() != null) {
-
-                    AuthCredential credential = EmailAuthProvider
-                            .getCredential("user@example.com", "password1234");
-
-                    App.getAuth().getCurrentUser().reauthenticate(credential)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-
-                                        App.getAuth().getCurrentUser().updatePassword("")
-                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if (task.isSuccessful()) {
-
-                                                        }
-                                                    }
-                                                });
-
-                                    }
                                 }
-                            });
+                            }
+                        });
 
-                }
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            Uri uri = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+                imageView.setImageBitmap(bitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Error - " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
@@ -223,20 +268,6 @@ public class MyAccountActivity extends AppCompatActivity {
         Intent intent = new Intent(this,SplashActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (tooltip.isShowing())
-            tooltip.dismiss();
-        else super.onBackPressed();
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (tooltip.isShowing())
-            tooltip.dismiss();
-        super.onDestroy();
     }
 
 }

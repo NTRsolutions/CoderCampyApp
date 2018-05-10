@@ -1,5 +1,6 @@
 package com.gmonetix.codercampy.ui.activity;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.gmonetix.codercampy.R;
@@ -17,6 +19,8 @@ import com.gmonetix.codercampy.ui.fragment.DiscussionPanel;
 import com.gmonetix.codercampy.util.DesignUtil;
 import com.gmonetix.codercampy.util.Device;
 import com.gmonetix.codercampy.util.NestedWebView;
+import com.gmonetix.codercampy.viewmodel.RatingViewModel;
+import com.gmonetix.codercampy.viewmodel.UserViewModel;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -33,6 +37,9 @@ public class BlogDetailsActivity extends AppCompatActivity {
     private Blog blog;
 
     private DiscussionPanel discussionPanel;
+
+    private UserViewModel userViewModel;
+    private RatingViewModel ratingViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +61,16 @@ public class BlogDetailsActivity extends AppCompatActivity {
 
         blog = (Blog) getIntent().getSerializableExtra("blog");
 
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        ratingViewModel = ViewModelProviders.of(this).get(RatingViewModel.class);
+
         this.setTitle(blog.name);
         Glide.with(this).load(blog.image).into(imageView);
 
-        String pish = "<html><head><style type=\"text/css\">@font-face {font-family: MyFont;src: url(\"file:///android_asset/open_sans_regular.ttf\")}body {font-family: MyFont;font-size: medium;text-align: justify;}</style></head><body>";
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+
+        String pish = "<html><head><meta name=\"viewport\" content=\"width=device-width\"><style type=\"text/css\">@font-face {font-family: MyFont;src: url(\"file:///android_asset/open_sans_regular.ttf\");} body {font-family: MyFont;font-size: medium;text-align: justify;} img{display: inline;height: auto;max-width: 90%;}</style></head><body>";
         String pas = "</body></html>";
         String myHtmlString = pish + blog.data + pas;
 
@@ -88,7 +101,7 @@ public class BlogDetailsActivity extends AppCompatActivity {
                 break;
 
             case R.id.menu_rating:
-                new RatingDialog(this,blog.id,false).show();
+                RatingDialog.newInstance(blog.id,false).show(getFragmentManager(),"Dialog");
                 break;
 
             case R.id.menu_discussions:

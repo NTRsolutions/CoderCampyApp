@@ -16,7 +16,7 @@
             app:navigationIcon="@drawable/ic_back_colored"
             android:layout_width="match_parent"
             app:titleTextColor="@color/colorPrimary"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
             android:background="@color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 

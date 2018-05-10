@@ -24,6 +24,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,6 +76,11 @@ public class SignUpWithEmailActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
 
                                         FirebaseUser firebaseUser = task.getResult().getUser();
+
+                                        Map map = new HashMap();
+                                        map.put(firebaseUser.getUid(), FirebaseInstanceId.getInstance().getToken());
+
+                                        FirebaseDatabase.getInstance().getReference("fcmTokens").setValue(map);
 
                                         User user = new User(email,name,null, CoderCampy.AUTH_PROVIDER_EMAIL,firebaseUser.getUid());
 

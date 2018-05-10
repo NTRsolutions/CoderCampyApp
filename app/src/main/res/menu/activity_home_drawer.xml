@@ -25,7 +25,7 @@
         <item
             android:id="@+id/nav_blog"
             android:icon="@drawable/ic_blog"
-            android:title="Blog" />
+            android:title="Posts" />
 
         <item
             android:id="@+id/nav_instructors"

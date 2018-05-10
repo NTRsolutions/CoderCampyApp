@@ -1,26 +1,22 @@
 package com.gmonetix.codercampy.adapter;
 
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import com.gmonetix.codercampy.R;
-import com.gmonetix.codercampy.model.Name;
+import com.gmonetix.codercampy.listener.OnLoadMoreListener;
 import com.gmonetix.codercampy.model.Rating;
-import com.gmonetix.codercampy.networking.APIInterface;
-
+import com.gmonetix.codercampy.viewmodel.UserViewModel;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Gaurav Bordoloi on 2/15/2018.
@@ -31,11 +27,38 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.RatingView
     private List<Rating> ratingList = new ArrayList<>();
     private Context context;
 
-    private APIInterface apiInterface;
+    private boolean isLoading;
+    private int visibleThreshold = 5;
+    private int lastVisibleItem, totalItemCount;
+    private OnLoadMoreListener onLoadMoreListener;
 
-    public RatingAdapter(Context context, APIInterface apiInterface) {
+    public RatingAdapter(Context context, RecyclerView recyclerView) {
         this.context = context;
-        this.apiInterface = apiInterface;
+
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                totalItemCount = linearLayoutManager.getItemCount();
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                    if (onLoadMoreListener != null) {
+                        onLoadMoreListener.onLoadMore();
+                    }
+                    isLoading = true;
+                }
+            }
+        });
+
+    }
+
+    public void setLoaded() {
+        isLoading = false;
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
+        this.onLoadMoreListener = mOnLoadMoreListener;
     }
 
     public void setList(List<Rating> ratingList) {
@@ -56,18 +79,6 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.RatingView
         holder.ratingName.setText(rating.uid);
         holder.ratingMessage.setText(rating.message);
         holder.ratingBar.setRating(rating.rating);
-
-        apiInterface.getUserNameByUid(rating.uid).enqueue(new Callback<Name>() {
-            @Override
-            public void onResponse(Call<Name> call, Response<Name> response) {
-                holder.ratingName.setText(response.body().name);
-            }
-
-            @Override
-            public void onFailure(Call<Name> call, Throwable t) {
-                Log.e("TAG","error - " + t.getMessage());
-            }
-        });
 
     }
 
